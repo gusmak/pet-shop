@@ -1,0 +1,354 @@
+<div style="max-width:960px;margin:0 auto;padding:24px;font-family:'Segoe UI',system-ui,sans-serif;color:#1a1a2e;">
+
+<h1 style="font-size:28px;margin-bottom:4px;">🐾 PetShop — Báo Cáo Kiểm Tra Hệ Thống</h1>
+<p style="color:#666;margin-bottom:24px;">Ngày kiểm tra: 29/10/2026 • Nhánh: <code>master</code></p>
+
+<!-- BUILD STATUS -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:12px;padding:16px;">
+    <div style="font-size:14px;color:#065f46;font-weight:600;">✅ Backend (NestJS)</div>
+    <div style="font-size:13px;color:#047857;margin-top:4px;">Build thành công — exit code 0</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:12px;padding:16px;">
+    <div style="font-size:14px;color:#065f46;font-weight:600;">✅ Frontend (Next.js 16.4.3)</div>
+    <div style="font-size:13px;color:#047857;margin-top:4px;">Build thành công — 15/15 trang static</div>
+  </div>
+</div>
+
+<!-- SCORE CARD -->
+<div style="background:linear-gradient(135deg,#f97316,#ea580c);border-radius:16px;padding:24px;color:white;margin-bottom:24px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:14px;opacity:0.9;">Điểm hoàn thiện tổng thể</div>
+      <div style="font-size:48px;font-weight:800;line-height:1.1;">~40%</div>
+      <div style="font-size:14px;opacity:0.9;margin-top:4px;">MVP giai đoạn đầu — cần bổ sung nhiều để production-ready</div>
+    </div>
+    <div style="font-size:64px;opacity:0.3;">🏗️</div>
+  </div>
+</div>
+
+<!-- KIẾN TRÚC TỔNG QUAN -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:8px;">📐 Kiến Trúc Hệ Thống</h2>
+<div style="background:#f8fafc;border-radius:12px;padding:16px;font-family:monospace;font-size:13px;line-height:1.8;border:1px solid #e2e8f0;">
+  <div><span style="color:#f97316;font-weight:bold;">Frontend</span> — Next.js 16.4.3 + React 19 + Tailwind CSS 4 (port 3002)</div>
+  <div><span style="color:#f97316;font-weight:bold;">Backend</span>  — NestJS 12 + Prisma 5 + PostgreSQL (port 8000)</div>
+  <div><span style="color:#f97316;font-weight:bold;">Auth</span>     — Mock (localStorage) — chưa có JWT</div>
+  <div><span style="color:#f97316;font-weight:bold;">Admin</span>   — Custom Next.js /admin (thay thế AdminJS)</div>
+</div>
+
+<!-- FILE STRUCTURE -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:8px;">📁 Cấu Trúc Files</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+    <h3 style="margin:0 0 8px;font-size:15px;color:#ea580c;">Backend (91 files)</h3>
+    <table style="width:100%;font-size:13px;">
+      <tr><td style="padding:3px 0;">Modules</td><td style="font-weight:600;">5 (Prisma, Services, Bookings, Contact, Admin)</td></tr>
+      <tr><td style="padding:3px 0;">Controllers</td><td style="font-weight:600;">4 (App, Services, Bookings, Contact)</td></tr>
+      <tr><td style="padding:3px 0;">Services</td><td style="font-weight:600;">4 (App, Services, Bookings, Contact)</td></tr>
+      <tr><td style="padding:3px 0;">DTOs</td><td style="font-weight:600;">2 (CreateBooking, CreateContact)</td></tr>
+      <tr><td style="padding:3px 0;">Prisma Models</td><td style="font-weight:600;">12 models</td></tr>
+      <tr><td style="padding:3px 0;">Tests</td><td style="font-weight:600;">2 files (mặc định, chưa meaningful)</td></tr>
+    </table>
+  </div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+    <h3 style="margin:0 0 8px;font-size:15px;color:#ea580c;">Frontend (35 files)</h3>
+    <table style="width:100%;font-size:13px;">
+      <tr><td style="padding:3px 0;">Trang công khai</td><td style="font-weight:600;">6 trang</td></tr>
+      <tr><td style="padding:3px 0;">Admin pages</td><td style="font-weight:600;">6 trang</td></tr>
+      <tr><td style="padding:3px 0;">Components</td><td style="font-weight:600;">4 (Header, Footer, ContactWidget, GoogleMap)</td></tr>
+      <tr><td style="padding:3px 0;">Hooks</td><td style="font-weight:600;">1 (useAuth)</td></tr>
+      <tr><td style="padding:3px 0;">Layouts</td><td style="font-weight:600;">2 (root, admin)</td></tr>
+      <tr><td style="padding:3px 0;">Tests</td><td style="font-weight:600;">0</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- CHI TIẾT HOÀN THIỆN -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:8px;">📊 Đánh Giá Chi Tiết Từng Module</h2>
+
+<!-- MODULE TABLE -->
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
+  <thead>
+    <tr style="background:#f97316;color:white;">
+      <th style="padding:10px 12px;text-align:left;border-radius:8px 0 0 0;">Module</th>
+      <th style="padding:10px 12px;text-align:center;">UI/UX</th>
+      <th style="padding:10px 12px;text-align:center;">API</th>
+      <th style="padding:10px 12px;text-align:center;">Kết nối</th>
+      <th style="padding:10px 12px;text-align:center;border-radius:0 8px 0 0;">Hoàn thiện</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">🏠 Homepage</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 85%</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#059669;">85%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">🛁 Dịch vụ</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 80%</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 Read</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#d97706;">55%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">💰 Bảng giá</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 85%</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#059669;">85%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">📅 Đặt lịch</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 75%</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 Create</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#d97706;">50%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">📞 Liên hệ</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 80%</td>
+      <td style="padding:10px 12px;text-align:center;">🟡 Mock</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">45%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">ℹ️ Về chúng tôi</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 85%</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;">⚪ N/A</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#059669;">85%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">🔐 Admin Auth</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 70%</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Mock</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 LocalStorage</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">35%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">📊 Admin Dashboard</td>
+      <td style="padding:10px 12px;text-align:center;">🟡 50%</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">25%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">💼 Admin Services</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 70%</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 Read</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">40%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">📅 Admin Bookings</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 70%</td>
+      <td style="padding:10px 12px;text-align:center;">🟢 Read</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">40%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 12px;font-weight:600;">👥 Admin Users</td>
+      <td style="padding:10px 12px;text-align:center;">🟡 60%</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">30%</td>
+    </tr>
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;font-weight:600;">👨‍💼 Admin Staff</td>
+      <td style="padding:10px 12px;text-align:center;">🟡 60%</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;">🔴 Không</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:#dc2626;">30%</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- VẤN ĐỀ NGHIÊM TRỌNG -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #dc2626;padding-bottom:8px;">🔴 Vấn Đề Quan Trọng</h2>
+
+<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+
+  <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:12px;padding:16px;">
+    <div style="font-weight:700;color:#991b1b;margin-bottom:6px;">1. Authentication chưa tồn tại — chỉ là mock</div>
+    <div style="font-size:13px;color:#7f1d1d;line-height:1.6;">
+      • <strong>Frontend:</strong> Đăng nhập ghi vào <code>localStorage</code>, không gọi API. Bất kỳ ai cũng có thể mở DevTools và set <code>adminUser</code> để bypass.<br>
+      • <strong>Backend:</strong> Không có AuthModule, không JWT, không guard. Tất cả API endpoints đều public, không xác thực.<br>
+      • <strong>Ảnh hưởng:</strong> Không thể deploy production. Dữ liệu admin hoàn toàn không được bảo vệ.
+    </div>
+  </div>
+
+  <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:12px;padding:16px;">
+    <div style="font-weight:700;color:#991b1b;margin-bottom:6px;">2. Frontend không kết nối Backend</div>
+    <div style="font-size:13px;color:#7f1d1d;line-height:1.6;">
+      • Form <strong>Đặt lịch</strong>: chỉ <code>alert()</code>, không gọi <code>POST /api/bookings</code><br>
+      • Form <strong>Liên hệ</strong>: chỉ <code>alert()</code>, không gọi <code>POST /api/contact</code><br>
+      • Trang <strong>Dịch vụ</strong>: dữ liệu hardcoded trong component, không fetch <code>GET /api/services</code><br>
+      • Admin pages: tất cả dữ liệu là <code>useState([...])</code> hardcoded, không fetch API
+    </div>
+  </div>
+
+  <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:12px;padding:16px;">
+    <div style="font-weight:700;color:#991b1b;margin-bottom:6px;">3. Admin CRUD chưa functional</div>
+    <div style="font-size:13px;color:#7f1d1d;line-height:1.6;">
+      • Các nút "Thêm dịch vụ", "Sửa", "Xóa" chỉ là UI shell — không có logic xử lý<br>
+      • Không có modal/dialog cho form create/edit<br>
+      • Backend thiếu admin API endpoints (chỉ có read cho services, bookings)
+    </div>
+  </div>
+
+  <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:12px;padding:16px;">
+    <div style="font-weight:700;color:#991b1b;margin-bottom:6px;">4. Contact Service không lưu database</div>
+    <div style="font-size:13px;color:#7f1d1d;line-height:1.6;">
+      • <code>contact.service.ts</code> chỉ <code>console.log()</code> rồi return success<br>
+      • Prisma schema thiếu model <code>ContactSubmission</code> (có trong <code>schema.sql</code> nhưng không sync)<br>
+      • Mọi liên hệ khách hàng gửi sẽ bị mất
+    </div>
+  </div>
+
+</div>
+
+<!-- VẤN ĐỀ TRUNG BÌNH -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #d97706;padding-bottom:8px;">🟡 Vấn Đề Cần Lưu Ý</h2>
+
+<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">5. Prisma Schema ≠ SQL Schema</div>
+    <div style="font-size:13px;color:#78350f;">
+      <code>schema.sql</code> có 15+ bảng (gallery, testimonials, blog_posts, contact_submissions...) nhưng Prisma schema chỉ có 12 models. Cần đồng bộ.
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">6. AdminJS Module vẫn còn trong Backend</div>
+    <div style="font-size:13px;color:#78350f;">
+      <code>admin.module.ts</code> vẫn import AdminJS với hardcoded credentials. Đã chuyển sang custom admin panel trên frontend nhưng chưa gỡ code cũ. Có thể gây conflict và lộ credentials.
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">7. Số điện thoại không nhất quán</div>
+    <div style="font-size:13px;color:#78350f;">
+      Sử dụng <strong>0971 616 634</strong> ở Header/Footer/ContactWidget nhưng <strong>0912 345 678</strong> ở trang Liên hệ và CTA sections. Cần thống nhất.
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">8. FRONTEND_URL sai port</div>
+    <div style="font-size:13px;color:#78350f;">
+      <code>.env</code> backend: <code>FRONTEND_URL=http://localhost:3000</code> nhưng frontend chạy port <strong>3002</strong>. CORS sẽ block khi kết nối thật.
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">9. Google Maps embed URL là giả</div>
+    <div style="font-size:13px;color:#78350f;">
+      <code>GoogleMap.tsx</code> dùng URL embed tĩnh với tọa độ giả (21.0050, 105.8250). Cần lấy embed thật từ Google Maps cho địa chỉ "7 Chùa Bộc, Đống Đa, Hà Nội".
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;">
+    <div style="font-weight:700;color:#92400e;margin-bottom:4px;">10. Không có Tests</div>
+    <div style="font-size:13px;color:#78350f;">
+      Backend có 2 file test mặc định NestJS (Hello World), frontend không có test nào. Chưa có unit test, integration test, hay e2e test thực sự.
+    </div>
+  </div>
+
+</div>
+
+<!-- ĐÃ HOÀN THIỆN -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #059669;padding-bottom:8px;">🟢 Những Phần Đã Hoàn Thiện Tốt</h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ UI/UX Frontend</div>
+    <div style="color:#047857;margin-top:4px;">Giao diện đẹp, responsive tốt, animations mượt. Design system nhất quán với primary orange. Mobile-friendly với bottom bar và hamburger menu.</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ Database Schema</div>
+    <div style="color:#047857;margin-top:4px;">Prisma schema thiết kế tốt: 12 models, đầy đủ relations, indexes. Hỗ trợ multi-store, service variants, appointment slots, booking status history.</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ Booking Logic</div>
+    <div style="color:#047857;margin-top:4px;">Backend xử lý tốt: kiểm tra slot trống, tính giá theo variant, tạo booking service, cập nhật slot count. Có validation DTO.</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ Admin Role System</div>
+    <div style="color:#047857;margin-top:4px;">useAuth hook phân quyền tốt: Admin (full CRUD) vs Monitor (read-only services). Sidebar ẩn/hiện theo role. Guard logic rõ ràng.</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ Tài liệu đầy đủ</div>
+    <div style="color:#047857;margin-top:4px;">README.md, TECH_STACK.md, DATABASE_SCHEMA.md, DEPLOYMENT.md — đều chi tiết bằng tiếng Việt. Có roadmap, chi phí ước tính, hướng dẫn deploy.</div>
+  </div>
+  <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:14px;font-size:13px;">
+    <div style="font-weight:700;color:#065f46;">✅ Build Pipeline</div>
+    <div style="color:#047857;margin-top:4px;">Cả 2 projects build thành công 100%. TypeScript không lỗi. Next.js tạo 15 static pages. NestJS compile ra dist/.</div>
+  </div>
+</div>
+
+<!-- API ENDPOINTS HIỆN CÓ -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:8px;">🔌 API Endpoints Hiện Có</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
+  <thead>
+    <tr style="background:#374151;color:white;">
+      <th style="padding:8px 12px;text-align:left;">Method</th>
+      <th style="padding:8px 12px;text-align:left;">Endpoint</th>
+      <th style="padding:8px 12px;text-align:left;">Mô tả</th>
+      <th style="padding:8px 12px;text-align:center;">Auth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/services</code></td><td style="padding:6px 12px;">Danh sách dịch vụ</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/services/:slug</code></td><td style="padding:6px 12px;">Chi tiết dịch vụ</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/services/categories</code></td><td style="padding:6px 12px;">Danh mục dịch vụ</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/services/category/:slug</code></td><td style="padding:6px 12px;">Dịch vụ theo danh mục</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 12px;"><code>POST</code></td><td style="padding:6px 12px;"><code>/api/bookings</code></td><td style="padding:6px 12px;">Tạo booking mới</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/bookings/user/:userId</code></td><td style="padding:6px 12px;">Bookings của user</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 12px;"><code>GET</code></td><td style="padding:6px 12px;"><code>/api/bookings/:id</code></td><td style="padding:6px 12px;">Chi tiết booking</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+    <tr style="background:#f8fafc;"><td style="padding:6px 12px;"><code>POST</code></td><td style="padding:6px 12px;"><code>/api/contact</code></td><td style="padding:6px 12px;">Gửi liên hệ (chỉ log)</td><td style="padding:6px 12px;text-align:center;">🔓</td></tr>
+  </tbody>
+</table>
+<div style="background:#fef2f2;border-radius:8px;padding:10px;font-size:13px;color:#991b1b;margin-bottom:24px;">
+  ⚠️ <strong>Tất cả endpoints đều không có authentication.</strong> Thiếu hoàn toàn admin API (CRUD services, manage bookings, manage users/staff).
+</div>
+
+<!-- THIẾU CÁC TÍNH NĂNG -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #6366f1;padding-bottom:8px;">🔮 Các Tính Năng Còn Thiếu (theo README)</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;font-size:13px;">
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Auth customer (đăng ký/đăng nhập)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ JWT backend authentication</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Admin API endpoints (CRUD)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Tích hợp payment (MoMo/ZaloPay)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Email/SMS notifications</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Upload ảnh (services, gallery)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Blog / Tin tức</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Gallery trang</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Booking history (user)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Dashboard API (thống kê thật)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ Tests (unit, integration, e2e)</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;">❌ CI/CD pipeline</div>
+</div>
+
+<!-- KẾT LUẬN -->
+<h2 style="font-size:20px;margin:24px 0 12px;border-bottom:2px solid #f97316;padding-bottom:8px;">📝 Kết Luận</h2>
+<div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:12px;padding:20px;font-size:14px;line-height:1.7;">
+  <p style="margin:0 0 12px;">
+    Hệ thống PetShop đang ở giai đoạn <strong>prototype/MVP sớm</strong>. Phần UI frontend đã khá hoàn thiện với design đẹp và responsive tốt. Database schema được thiết kế bài bản. Tuy nhiên, <strong>phần kết nối giữa frontend và backend gần như chưa tồn tại</strong> — mọi form và trang admin đều dùng dữ liệu hardcoded.
+  </p>
+  <p style="margin:0 0 12px;">
+    <strong>3 việc cần làm ưu tiên cao nhất để có thể sử dụng thật:</strong>
+  </p>
+  <ol style="margin:0;padding-left:20px;">
+    <li style="margin-bottom:8px;"><strong>Kết nối Frontend ↔ Backend:</strong> Thay alert() bằng fetch API calls thật. Đưa dữ liệu services từ DB ra frontend. Xử lý form booking/contact qua API.</li>
+    <li style="margin-bottom:8px;"><strong>Xây dựng Authentication:</strong> JWT auth module cho backend. Bảo vệ API endpoints. Thay mock localStorage bằng token-based auth thật.</li>
+    <li><strong>Admin CRUD API + UI:</strong> Backend endpoints cho admin operations. Modal forms cho create/edit. Dashboard stats từ database thật.</li>
+  </ol>
+</div>
+
+<div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:12px;color:#94a3b8;">
+  PetShop System Review • Generated by Qwen Code • 29/10/2026
+</div>
+
+</div>

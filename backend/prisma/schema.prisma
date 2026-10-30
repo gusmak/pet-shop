@@ -1,0 +1,399 @@
+// PetShop — Prisma schema. DB schema (PostgreSQL) tên "pet-shop":
+//   DATABASE_URL="postgresql://user:pass@localhost:5432/<db>?schema=pet-shop"
+// File ../schema.sql được sinh từ schema này (xem DATABASE_SCHEMA.md / README).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// Nhóm & phân quyền:  Tài khoản → Nhóm → Quyền
+// ─────────────────────────────────────────────
+
+model Group {
+  id          String   @id @default(uuid())
+  key         String   @unique // admin | monitor | customer
+  name        String
+  description String?
+  isLocked    Boolean  @default(false) @map("is_locked") // nhóm admin: quyền cố định
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  permissions GroupPermission[]
+  staff       Staff[]
+  users       User[]
+
+  @@map("groups")
+}
+
+model Permission {
+  id          String  @id @default(uuid())
+  key         String  @unique // vd: bookings.manage
+  label       String
+  description String?
+
+  groups GroupPermission[]
+
+  @@map("permissions")
+}
+
+model GroupPermission {
+  groupId      String     @map("group_id")
+  permissionId String     @map("permission_id")
+  group        Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, permissionId])
+  @@map("group_permissions")
+}
+
+// ─────────────────────────────────────────────
+// Tài khoản
+// ─────────────────────────────────────────────
+
+// Khách hàng — luôn thuộc nhóm customer
+model User {
+  id            String    @id @default(uuid())
+  groupId       String    @map("group_id")
+  group         Group     @relation(fields: [groupId], references: [id])
+  email         String    @unique
+  phone         String?   @unique
+  passwordHash  String    @map("password_hash")
+  fullName      String    @map("full_name")
+  avatar        String?
+  address       String?
+  loyaltyPoints Int       @default(0) @map("loyalty_points")
+  isActive      Boolean   @default(true) @map("is_active")
+  lastLoginAt   DateTime? @map("last_login_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  pets     Pet[]
+  bookings Booking[]
+
+  @@index([groupId])
+  @@map("users")
+}
+
+// Nhân viên — nhóm admin hoặc monitor
+model Staff {
+  id             String        @id @default(uuid())
+  storeId        String        @map("store_id")
+  store          Store         @relation(fields: [storeId], references: [id], onDelete: Restrict)
+  groupId        String        @map("group_id")
+  group          Group         @relation(fields: [groupId], references: [id])
+  email          String        @unique
+  phone          String        @unique
+  passwordHash   String        @map("password_hash")
+  fullName       String        @map("full_name")
+  avatar         String?
+  employeeCode   String        @unique @map("employee_code")
+  position       StaffPosition
+  specialties    String[]
+  isSuperAdmin   Boolean       @default(false) @map("is_super_admin") // không đổi nhóm / khóa / xóa được
+  isActive       Boolean       @default(true) @map("is_active")
+  hireDate       DateTime      @map("hire_date") @db.Date
+  lastLoginAt    DateTime?     @map("last_login_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  bookings Booking[] @relation("AssignedStaff")
+  posts    Post[]
+
+  @@index([storeId])
+  @@index([groupId])
+  @@map("staff")
+}
+
+enum StaffPosition {
+  RECEPTIONIST
+  GROOMER
+  MANAGER
+  ADMIN
+
+  @@map("staff_position")
+}
+
+// ─────────────────────────────────────────────
+// Cửa hàng, thú cưng
+// ─────────────────────────────────────────────
+
+model Store {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  address         String
+  phone           String
+  email           String?
+  zaloLink        String?  @map("zalo_link")
+  latitude        Float?
+  longitude       Float?
+  openTime        String   @default("08:00") @map("open_time") @db.VarChar(5)
+  closeTime       String   @default("20:00") @map("close_time") @db.VarChar(5)
+  slotCapacity    Int      @default(3) @map("slot_capacity") // số lịch tối đa cùng một khung giờ
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  staff    Staff[]
+  bookings Booking[]
+
+  @@map("stores")
+}
+
+model Pet {
+  id        String     @id @default(uuid())
+  ownerId   String     @map("owner_id")
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name      String
+  species   PetSpecies
+  size      PetSize    @default(SMALL)
+  breed     String?
+  weight    Float?
+  notes     String?
+  isActive  Boolean    @default(true) @map("is_active")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  bookings Booking[]
+
+  @@index([ownerId])
+  @@map("pets")
+}
+
+enum PetSpecies {
+  DOG
+  CAT
+  BIRD
+  RABBIT
+  HAMSTER
+  REPTILE
+  OTHER
+
+  @@map("pet_species")
+}
+
+enum PetSize {
+  TOY
+  SMALL
+  MEDIUM
+  LARGE
+  GIANT
+
+  @@map("pet_size")
+}
+
+// ─────────────────────────────────────────────
+// Dịch vụ (giá: VNĐ, số nguyên)
+// ─────────────────────────────────────────────
+
+model ServiceCategory {
+  id           String   @id @default(uuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  icon         String?
+  displayOrder Int      @default(0) @map("display_order")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  services Service[]
+
+  @@map("service_categories")
+}
+
+model Service {
+  id           String          @id @default(uuid())
+  categoryId   String          @map("category_id")
+  category     ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name         String
+  slug         String          @unique
+  description  String
+  basePrice    Int             @map("base_price")
+  duration     Int // phút
+  features     String[]
+  imageUrl     String?         @map("image_url")
+  displayOrder Int             @default(0) @map("display_order")
+  isFeatured   Boolean         @default(false) @map("is_featured")
+  isPopular    Boolean         @default(false) @map("is_popular")
+  isActive     Boolean         @default(true) @map("is_active")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  variants        ServiceVariant[]
+  bookingServices BookingService[]
+
+  @@index([categoryId])
+  @@map("services")
+}
+
+// Giá theo kích thước thú cưng
+model ServiceVariant {
+  id        String   @id @default(uuid())
+  serviceId String   @map("service_id")
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  size      PetSize
+  price     Int
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  bookingServices BookingService[]
+
+  @@unique([serviceId, size])
+  @@map("service_variants")
+}
+
+// ─────────────────────────────────────────────
+// Đặt lịch — khách có thể đặt không cần đăng nhập (user_id null)
+// ─────────────────────────────────────────────
+
+model Booking {
+  id            String        @id @default(uuid())
+  bookingNumber String        @unique @map("booking_number") // BK-YYYYMMDD-0001
+  bookingSeq    Int           @unique @default(autoincrement()) @map("booking_seq")
+
+  userId        String?       @map("user_id")
+  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName  String        @map("customer_name")
+  customerPhone String        @map("customer_phone")
+  customerEmail String?       @map("customer_email")
+
+  petId         String?       @map("pet_id")
+  pet           Pet?          @relation(fields: [petId], references: [id], onDelete: SetNull)
+  petName       String        @map("pet_name")
+  petSpecies    PetSpecies    @map("pet_species")
+  petSize       PetSize       @map("pet_size")
+
+  storeId       String        @map("store_id")
+  store         Store         @relation(fields: [storeId], references: [id], onDelete: Restrict)
+
+  date          DateTime      @db.Date
+  startTime     String        @map("start_time") @db.VarChar(5) // HH:mm
+  endTime       String        @map("end_time") @db.VarChar(5)
+  status        BookingStatus @default(PENDING)
+
+  assignedToId  String?       @map("assigned_to_id")
+  assignedTo    Staff?        @relation("AssignedStaff", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  customerNotes String?       @map("customer_notes")
+  staffNotes    String?       @map("staff_notes")
+  total         Int
+  cancelReason  String?       @map("cancel_reason")
+  cancelledAt   DateTime?     @map("cancelled_at")
+  completedAt   DateTime?     @map("completed_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  services BookingService[]
+  payment  Payment?
+
+  @@index([date, startTime])
+  @@index([status])
+  @@index([userId])
+  @@index([customerPhone])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+
+  @@map("booking_status")
+}
+
+model BookingService {
+  id        String          @id @default(uuid())
+  bookingId String          @map("booking_id")
+  booking   Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  serviceId String          @map("service_id")
+  service   Service         @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  variantId String?         @map("variant_id")
+  variant   ServiceVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  price     Int // giá tại thời điểm đặt
+  quantity  Int             @default(1)
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  @@index([bookingId])
+  @@map("booking_services")
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  bookingId     String        @unique @map("booking_id")
+  booking       Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount        Int
+  method        PaymentMethod
+  status        PaymentStatus @default(PENDING)
+  transactionId String?       @map("transaction_id")
+  paidAt        DateTime?     @map("paid_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  MOMO
+  ZALOPAY
+
+  @@map("payment_method")
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+
+  @@map("payment_status")
+}
+
+// ─────────────────────────────────────────────
+// Nội dung
+// ─────────────────────────────────────────────
+
+model Post {
+  id          String    @id @default(uuid())
+  slug        String    @unique
+  title       String
+  excerpt     String
+  content     String
+  coverImage  String?   @map("cover_image")
+  authorId    String?   @map("author_id")
+  author      Staff?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorName  String    @map("author_name") // snapshot, còn khi nhân viên bị xóa
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([isPublished, publishedAt])
+  @@index([authorId])
+  @@map("posts")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([isRead, createdAt])
+  @@map("contact_messages")
+}
