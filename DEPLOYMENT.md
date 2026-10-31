@@ -79,7 +79,7 @@ git clone https://github.com/yourusername/pet-shop.git .
 # Option 2: Upload từ local (dùng rsync hoặc scp)
 # Trên local:
 rsync -avz --exclude node_modules --exclude .env ./backend root@your-vps-ip:/var/www/petshop/backend/
-rsync -avz --exclude node_modules --exclude .next ./web root@your-vps-ip:/var/www/petshop/web/
+rsync -avz --exclude node_modules --exclude .next ./frontend root@your-vps-ip:/var/www/petshop/frontend/
 ```
 
 ### Bước 4: Setup Backend
@@ -116,7 +116,7 @@ pm2 start dist/main.js --name petshop-backend
 ### Bước 5: Setup Frontend
 
 ```bash
-cd /var/www/petshop/web
+cd /var/www/petshop/frontend
 
 # Install dependencies
 npm install
@@ -277,7 +277,7 @@ services:
 
   frontend:
     build:
-      context: ./web
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: petshop-frontend
     restart: always
@@ -353,7 +353,7 @@ CMD ["node", "dist/main.js"]
 ### Bước 4: Tạo Dockerfile cho Frontend
 
 ```bash
-cd /var/www/petshop/web
+cd /var/www/petshop/frontend
 nano Dockerfile
 ```
 
@@ -441,7 +441,7 @@ npm run build
 pm2 restart petshop-backend
 
 # Frontend
-cd ../web
+cd ../frontend
 npm install
 npm run build
 pm2 restart petshop-frontend

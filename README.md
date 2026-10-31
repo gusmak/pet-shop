@@ -15,7 +15,7 @@ Website đặt lịch dịch vụ spa và grooming cho thú cưng. Bao gồm tra
 
 ```
 pet-shop/
-├── web/                    # Next.js frontend (port 3002)
+├── frontend/                    # Next.js frontend (port 3002)
 │   ├── app/
 │   │   ├── page.tsx        # Trang chủ
 │   │   ├── dich-vu/        # Trang dịch vụ
@@ -58,7 +58,7 @@ Backend chạy tại `http://localhost:8000`
 ### Frontend
 
 ```bash
-cd web
+cd frontend
 npm install
 npm run dev
 ```
@@ -119,7 +119,7 @@ Mô hình: **User → Nhóm → Quyền**. Một trang đăng nhập chung `/log
 - Quyền của Monitor/Customer chỉnh được trong ma trận (chế độ demo lưu localStorage). Chưa có model Group/Permission ở backend.
 > Phân quyền ở FE chỉ để ẩn/hiện giao diện — backend vẫn cần guard (JwtAuthGuard + RolesGuard) cho từng endpoint.
 
-> **Chế độ demo (preview không cần backend/DB):** đặt `NEXT_PUBLIC_DEMO_MODE=true` trong `web/.env.local` rồi chạy `npm run dev`.
+> **Chế độ demo (preview không cần backend/DB):** đặt `NEXT_PUBLIC_DEMO_MODE=true` trong `frontend/.env.local` rồi chạy `npm run dev`.
 > Đăng nhập, dịch vụ, đặt lịch (kể cả đơn khách đặt từ `/booking`) hoạt động hoàn toàn trên trình duyệt (localStorage).
 > Khi triển khai thật: bỏ biến này để FE gọi API backend (JWT).
 

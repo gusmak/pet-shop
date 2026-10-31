@@ -40,7 +40,7 @@ services:
 
   frontend:
     build:
-      context: ./web
+      context: ./frontend
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8060}
     container_name: petshop-frontend
