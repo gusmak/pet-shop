@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: petshop-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-petshop}
+      POSTGRES_USER: ${POSTGRES_USER:-petshop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-petshop_dev_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Chạy schema + seed tự động ở lần init đầu tiên (khi volume còn trống)
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    ports:
+      # Map ra 5433 để tránh xung đột PostgreSQL local đang chạy ở 5432
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-petshop} -d ${POSTGRES_DB:-petshop}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    container_name: petshop-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-petshop}:${POSTGRES_PASSWORD:-petshop_dev_password}@postgres:5432/${POSTGRES_DB:-petshop}?schema=pet-shop
+      PORT: "8000"
+      NODE_ENV: production
+      # Origin mà trình duyệt mở frontend (CORS)
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3006}
+      JWT_SECRET: ${JWT_SECRET:-petshop-jwt-secret-dev-only}
+    ports:
+      - "8060:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8060}
+    container_name: petshop-frontend
+    restart: unless-stopped
+    ports:
+      - "3006:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

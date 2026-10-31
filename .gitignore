@@ -1,0 +1,10 @@
+# secrets — không commit
+.env
+.env.local
+.env.*.local
+
+# dependencies / build
+node_modules/
+dist/
+.next/
+out/
