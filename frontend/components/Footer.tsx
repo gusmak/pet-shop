@@ -1,7 +1,10 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
 export default function Footer() {
+  const t = useTranslations("common");
+
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -14,12 +17,10 @@ export default function Footer() {
               </div>
               <div>
                 <div className="text-xl font-bold text-white">PetShop</div>
-                <div className="text-xs text-gray-400">Spa & Grooming</div>
+                <div className="text-xs text-gray-400">{t("tagline")}</div>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-4">
-              Dịch vụ spa và grooming chuyên nghiệp cho thú cưng. Đội ngũ giàu kinh nghiệm, tận tâm chăm sóc bé cưng của bạn.
-            </p>
+            <p className="text-sm text-gray-400 mb-4">{t("footer.about")}</p>
             <div className="flex gap-3">
               <a
                 href="https://facebook.com"
@@ -44,26 +45,26 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Dịch vụ</h3>
+            <h3 className="text-white font-semibold mb-4">{t("footer.services")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/services#spa" className="hover:text-primary-500 transition-colors">
-                  Tắm & Spa
+                  {t("footer.spa")}
                 </Link>
               </li>
               <li>
                 <Link href="/services#grooming" className="hover:text-primary-500 transition-colors">
-                  Cắt tỉa & Grooming
+                  {t("footer.grooming")}
                 </Link>
               </li>
               <li>
                 <Link href="/services#cham-soc" className="hover:text-primary-500 transition-colors">
-                  Chăm sóc đặc biệt
+                  {t("footer.specialCare")}
                 </Link>
               </li>
               <li>
                 <Link href="/booking" className="hover:text-primary-500 transition-colors">
-                  Đặt lịch online
+                  {t("footer.onlineBooking")}
                 </Link>
               </li>
             </ul>
@@ -71,7 +72,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Liên hệ</h3>
+            <h3 className="text-white font-semibold mb-4">{t("footer.contact")}</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
@@ -94,21 +95,21 @@ export default function Footer() {
 
           {/* Hours */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Giờ mở cửa</h3>
+            <h3 className="text-white font-semibold mb-4">{t("footer.hours")}</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-primary-500" />
-                <span>Thứ 2 - Chủ nhật</span>
+                <span>{t("footer.weekday")}</span>
               </li>
               <li className="pl-7">8:00 - 20:00</li>
-              <li className="pl-7 text-gray-400">Nghỉ lễ theo thông báo</li>
+              <li className="pl-7 text-gray-400">{t("footer.holiday")}</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2026 PetShop. Tất cả quyền được bảo lưu.</p>
+          <p>{t("footer.copyright")}</p>
         </div>
       </div>
     </footer>

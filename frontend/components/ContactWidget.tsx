@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Phone, MessageCircle } from "lucide-react";
 
 const HOTLINE = "0971616634";
@@ -7,6 +8,8 @@ const ZALO_LINK = "https://zalo.me/0971616634";
 
 // Lớp sóng nằm SAU nút (-z-10) và nút có nền đặc, để icon luôn rõ nét.
 export default function ContactWidget() {
+  const t = useTranslations("common");
+
   return (
     <>
       {/* Nút nổi - Desktop */}
@@ -21,13 +24,13 @@ export default function ContactWidget() {
           <span className="absolute inset-0 -z-10 rounded-full bg-blue-500 animate-ring-out" aria-hidden />
           <MessageCircle className="w-7 h-7" strokeWidth={2.25} />
           <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-            Chat Zalo
+            {t("widget.zalo")}
           </span>
         </a>
 
         <a
           href={`tel:${HOTLINE}`}
-          aria-label="Gọi hotline"
+          aria-label={t("widget.hotline")}
           className="group relative isolate flex items-center justify-center w-14 h-14 rounded-full bg-primary-600 text-white shadow-xl shadow-primary-600/30 ring-4 ring-white transition-transform hover:scale-110 hover:bg-primary-700"
         >
           <span className="absolute inset-0 -z-10 rounded-full bg-primary-500 animate-ring-out" style={{ animationDelay: "0.6s" }} aria-hidden />
@@ -46,7 +49,7 @@ export default function ContactWidget() {
             className="flex items-center justify-center gap-2 h-12 rounded-xl bg-primary-600 text-white font-semibold active:bg-primary-700"
           >
             <Phone className="w-5 h-5" strokeWidth={2.25} />
-            Gọi ngay
+            {t("widget.call")}
           </a>
           <a
             href={ZALO_LINK}
@@ -55,7 +58,7 @@ export default function ContactWidget() {
             className="flex items-center justify-center gap-2 h-12 rounded-xl bg-blue-600 text-white font-semibold active:bg-blue-700"
           >
             <MessageCircle className="w-5 h-5" strokeWidth={2.25} />
-            Chat Zalo
+            {t("widget.zalo")}
           </a>
         </div>
       </div>

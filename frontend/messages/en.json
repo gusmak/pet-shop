@@ -1,0 +1,424 @@
+{
+  "meta": {
+    "title": "PetShop - Professional Pet Spa & Grooming",
+    "description": "Professional spa, grooming and fur trimming services for pets. Easy online booking and dedicated care.",
+    "keywords": ["pet shop", "pet spa", "dog cat grooming", "fur trimming", "pet bath"]
+  },
+
+  "common": {
+    "time": { "hour": "h", "minute": "min" },
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "pricing": "Pricing",
+      "news": "News",
+      "about": "About us",
+      "contact": "Contact"
+    },
+    "tagline": "Spa & Grooming",
+    "topbar": { "hours": "Open: 8:00 AM - 8:00 PM (Mon - Sun)" },
+    "header": {
+      "account": "Account",
+      "admin": "Admin",
+      "login": "Sign in",
+      "logout": "Sign out",
+      "bookNow": "Book now"
+    },
+    "footer": {
+      "about": "Professional pet spa and grooming services. An experienced, dedicated team that cares for your pet like family.",
+      "services": "Services",
+      "spa": "Bath & Spa",
+      "grooming": "Trimming & Grooming",
+      "specialCare": "Special care",
+      "onlineBooking": "Book online",
+      "contact": "Contact",
+      "hours": "Opening hours",
+      "weekday": "Monday - Sunday",
+      "holiday": "Closed on public holidays",
+      "copyright": "© 2026 PetShop. All rights reserved."
+    },
+    "widget": {
+      "call": "Call now",
+      "zalo": "Chat Zalo",
+      "hotline": "Call hotline"
+    }
+  },
+
+  "home": {
+    "hero": {
+      "badge": "Professional Spa & Grooming",
+      "titlePrefix": "Caring for your",
+      "titleHighlight": "pet",
+      "titleSuffix": "like family",
+      "description": "Bathing, spa, trimming and deep care by an experienced team. Book online in just a few steps and your pet will be lovingly cared for.",
+      "bookNow": "Book now",
+      "floatingCustomer": "500+ customers",
+      "floatingTrust": "trust our service",
+      "floatingPrice": "Bath & spa from 150K"
+    },
+    "stats": [
+      { "value": "500+", "label": "customers" },
+      { "value": "6", "label": "services" },
+      { "value": "8am–8pm", "label": "every day" }
+    ],
+    "quickInfo": [
+      { "label": "Opening hours", "value": "8:00 – 20:00, Mon – Sun" },
+      { "label": "Hotline", "value": "0971 616 634" },
+      { "label": "Address", "value": "7 Chua Boc, Dong Da, Hanoi" }
+    ],
+    "services": {
+      "eyebrow": "Services",
+      "title": "Everything your pet needs to look and feel great",
+      "description": "A wide range of professional care services for your pet.",
+      "from": "From",
+      "viewDetails": "View details",
+      "viewAll": "View all services",
+      "items": [
+        { "title": "Bath & Spa", "description": "Bathing and relaxing massage with premium products, safe for your pet's skin and coat.", "price": "150K" },
+        { "title": "Trimming & Grooming", "description": "Professional trimming and styling by breed and to your preference.", "price": "200K" },
+        { "title": "Special care", "description": "Oral hygiene, anal gland expression and deep care for your pet.", "price": "100K" }
+      ]
+    },
+    "steps": {
+      "eyebrow": "How it works",
+      "title": "Book in just 3 steps",
+      "items": [
+        { "title": "Book online", "description": "Pick a service, date and time that suits you in under a minute." },
+        { "title": "Get confirmation", "description": "We call or message to confirm your appointment within 30 minutes." },
+        { "title": "Your pet is cared for", "description": "Bring your pet in and pick up a clean, happy companion." }
+      ]
+    },
+    "features": {
+      "eyebrow": "Why choose PetShop",
+      "title": "A promise to every pet",
+      "items": [
+        { "title": "Professional team", "description": "Experienced, well-trained groomers." },
+        { "title": "Caring like family", "description": "Gentle and patient with every pet, even shy ones." },
+        { "title": "Safe products", "description": "Shampoos and tools suited to each coat and breed." },
+        { "title": "Flexible hours", "description": "Open 8:00 – 20:00 all week, book online anytime." }
+      ]
+    },
+    "cta": {
+      "title": "Ready to pamper your pet?",
+      "description": "Book today to get 10% off your first service.",
+      "bookOnline": "Book online",
+      "chatZalo": "Chat Zalo"
+    },
+    "map": {
+      "eyebrow": "Location",
+      "title": "Visit our store"
+    }
+  },
+
+  "testimonials": {
+    "eyebrow": "Reviews",
+    "title": "What do customers say?",
+    "owner": "Owner of",
+    "ariaPrev": "Previous review",
+    "ariaNext": "Next review",
+    "ariaRating": "5 out of 5 stars",
+    "items": [
+      { "name": "Ms. Huong", "pet": "Cat Mimi", "content": "Amazing service! Mimi loves bathing here and the staff are so gentle and thoughtful." },
+      { "name": "Mr. Minh", "pet": "Dog Lucky", "content": "Lucky was beautifully groomed and the whole family is happy. We will definitely return!" },
+      { "name": "Ms. Lan", "pet": "Dog Bong", "content": "Reasonable prices and professional service. Bong is always happy to come here." },
+      { "name": "Ms. Mai", "pet": "Cat Tom", "content": "Thoughtful advice and they even showed me how to brush at home. Tom came home smelling fresh all week." },
+      { "name": "Mr. Duc", "pet": "Dog Muc", "content": "Our dog usually fears baths, but the team handled him gently and he cooperated. Very reassuring." },
+      { "name": "Ms. Ngoc", "pet": "Dog Bong Tuyet", "content": "Quick online booking and transparent pricing. We will stay with PetShop long term." }
+    ]
+  },
+
+  "catalog": {
+    "categories": {
+      "spa-tam": "Bath & Spa",
+      "cat-tia-grooming": "Trimming & Grooming",
+      "cham-soc-dac-biet": "Special care"
+    },
+    "services": {
+      "tam-ve-sinh-co-ban": {
+        "name": "Basic bath",
+        "description": "Full-body bath with dedicated shampoo, blow-dry and ear, eye and nose cleaning.",
+        "features": ["Bath with suitable shampoo", "Coat blow-dry", "Ear cleaning", "Eye and nose cleaning", "Brushing"]
+      },
+      "tam-spa-cao-cap": {
+        "name": "Premium spa bath",
+        "description": "A relaxing spa experience with premium products, massage and coat conditioning.",
+        "features": ["Premium shampoo bath", "15-minute relaxing massage", "Coat conditioning", "Blow-dry styling", "Light cologne", "Ear, eye and nose cleaning"]
+      },
+      "cat-tia-long-co-ban": {
+        "name": "Basic fur trimming",
+        "description": "Neat, breed-standard trimming and shaping.",
+        "features": ["Bath before trimming", "Standard shape trimming", "Nail clipping", "Ear cleaning", "Blow-dry and brushing"]
+      },
+      "cat-tia-tao-kieu-nghe-thuat": {
+        "name": "Artistic styling",
+        "description": "Special and artistic styles on request.",
+        "features": ["Style consultation", "Premium bath", "Artistic trimming", "Accessories", "Commemorative photo"]
+      },
+      "ve-sinh-rang-mieng": {
+        "name": "Oral hygiene",
+        "description": "Deep teeth and oral cleaning to prevent tartar buildup.",
+        "features": ["Oral check", "Deep teeth cleaning", "Light tartar removal", "Care advice"]
+      },
+      "vat-tuyen-hoi": {
+        "name": "Anal gland expression",
+        "description": "Professional anal gland expression and thorough hygiene.",
+        "features": ["Professional gland expression", "Anal area cleaning", "Health check"]
+      }
+    }
+  },
+
+  "servicesPage": {
+    "title": "Our Services",
+    "subtitle": "A wide range of professional, dedicated care services for your pet",
+    "all": "All",
+    "popular": "Popular",
+    "priceBySize": "Price by size",
+    "size": { "toy": "Small", "small": "Medium", "medium": "Avg", "large": "Large" },
+    "bookNow": "Book now",
+    "ctaTitle": "Can not find what you need?",
+    "ctaDescription": "Contact us for advice on the best care for your pet",
+    "contactNow": "Contact us",
+    "callNow": "Call 0971 616 634"
+  },
+
+  "pricingPage": {
+    "all": "All",
+    "badge": "10% off your first service",
+    "title": "Service pricing",
+    "subtitle": "Transparent pricing by pet size — no hidden fees.",
+    "sizeTitle": "Pet size guide",
+    "sizes": [
+      { "label": "Toy", "weight": "under 3kg" },
+      { "label": "Small", "weight": "3–10kg" },
+      { "label": "Medium", "weight": "10–25kg" },
+      { "label": "Large", "weight": "over 25kg" }
+    ],
+    "fromPrice": "From",
+    "perSize": "by pet size",
+    "popular": "Popular",
+    "bookNow": "Book now",
+    "promoTitle": "Loyalty offers",
+    "promos": [
+      { "title": "First visit", "desc": "10% off your first service." },
+      { "title": "5-visit package", "desc": "Buy 5 visits in advance — save 15% on the total bill." },
+      { "title": "Loyal customer", "desc": "From visit 5 onward, save an extra 10% each time." }
+    ],
+    "noteTitle": "Note",
+    "notes": [
+      "Prices do not include VAT (if applicable).",
+      "Prices may vary depending on the condition of your pet's coat and skin.",
+      "Pay on arrival (COD) — we contact you to confirm within 30 minutes."
+    ],
+    "ctaTitle": "Need advice on the right service?",
+    "ctaDescription": "The PetShop team is ready to help you choose the best care package for your pet.",
+    "chatZalo": "Chat Zalo"
+  },
+
+  "bookingPage": {
+    "title": "Book Online",
+    "subtitle": "Easy booking - Quick confirmation - Dedicated care",
+    "customerInfo": "Customer information",
+    "fullName": "Full name",
+    "phone": "Phone number",
+    "email": "Email",
+    "petInfo": "Pet information",
+    "petName": "Pet name",
+    "petType": "Pet type",
+    "petTypeDog": "Dog",
+    "petTypeCat": "Cat",
+    "petTypeOther": "Other",
+    "petSize": "Size",
+    "sizes": {
+      "toy": "Small (under 3kg)",
+      "small": "Medium (3-10kg)",
+      "medium": "Average (10-25kg)",
+      "large": "Large (over 25kg)"
+    },
+    "selectService": "Choose services",
+    "selectServiceHint": "You can choose multiple services (one per group). Priced by size:",
+    "selectedServices": "Selected services",
+    "estimated": "Estimated",
+    "subtotal": "Subtotal",
+    "dateTime": "Choose date and time",
+    "date": "Booking date",
+    "time": "Appointment time",
+    "chooseTime": "Choose time",
+    "notes": "Notes (optional)",
+    "notesPlaceholder": "Example: my pet needs gentle care or fears the dryer...",
+    "paymentInfo": "Payment information",
+    "paymentNote": "Pay on arrival (COD). We will contact you to confirm the appointment within 30 minutes.",
+    "errorNoService": "Please choose at least one service",
+    "errorGeneric": "Could not book, please try again",
+    "submit": "Book now",
+    "submitting": "Submitting...",
+    "successTitle": "Booking successful!",
+    "successCode": "Booking code",
+    "successBody": "We will contact you to confirm within 30 minutes.",
+    "bookAnother": "Book another",
+    "backHome": "Back to home"
+  },
+
+  "contactPage": {
+    "title": "Contact Us",
+    "subtitle": "Contact us for free advice on pet care services",
+    "formTitle": "Send us a message",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone number",
+    "subject": "Subject",
+    "chooseSubject": "Choose a subject",
+    "subjectBooking": "Book a service",
+    "subjectPricing": "Ask about pricing",
+    "subjectService": "Service advice",
+    "subjectFeedback": "Feedback",
+    "subjectOther": "Other",
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "sent": "Thank you! We will respond within 24 hours.",
+    "sending": "Sending...",
+    "send": "Send message",
+    "hotline": "Hotline",
+    "hotlineNote": "24/7 support",
+    "zalo": "Zalo",
+    "zaloAction": "Chat now",
+    "zaloNote": "Fast response",
+    "emailLabel": "Email",
+    "emailNote": "Reply within 24h",
+    "hours": "Opening hours",
+    "hoursNote": "Monday - Sunday",
+    "mapTitle": "Store address"
+  },
+
+  "map": {
+    "title": "PetShop - Spa & Grooming",
+    "direction": "Directions"
+  },
+
+  "aboutPage": {
+    "badge": "About Us",
+    "titlePrefix": "The",
+    "titleHighlight": "PetShop",
+    "titleSuffix": "Story",
+    "intro": "From a passion for pet care, we built a professional spa and grooming service where every pet is loved and cared for with dedication.",
+    "stats": [
+      { "number": "500+", "label": "Happy customers" },
+      { "number": "1000+", "label": "Services provided" },
+      { "number": "5+", "label": "Years of experience" },
+      { "number": "4.9/5", "label": "Average rating" }
+    ],
+    "story": {
+      "title": "Our Journey",
+      "p1": "PetShop was founded in 2019 by Mr. Nguyen Van An, who has a strong passion for pet care. After years in the industry, he saw growing demand for high-quality professional spa and grooming services for pets.",
+      "p2": "With dedication and experience, he built PetShop into a trusted destination for hundreds of pet owners. We go beyond services to deliver holistic care, treating every pet like a family member.",
+      "p3": "After 5 years of growth, PetShop has served more than 1000 customers, built a professional grooming team and earned several respected industry awards."
+    },
+    "values": {
+      "title": "Core Values",
+      "description": "The principles that guide everything we do",
+      "items": [
+        { "title": "Love", "description": "We love every pet like our own family. Each one receives dedicated, thoughtful care." },
+        { "title": "Professionalism", "description": "A well-trained team that keeps up with the latest trends. Products and services meet international standards." },
+        { "title": "Dedication", "description": "We always put the pet's wellbeing first, with honest advice and quality service." },
+        { "title": "Punctuality", "description": "We respect our customers' time, finishing every service on schedule without keeping you waiting." }
+      ]
+    },
+    "team": {
+      "title": "Our Team",
+      "description": "Dedicated, experienced experts",
+      "items": [
+        { "name": "Nguyen Van An", "role": "Founder & CEO", "bio": "10 years in pet care, having trained over 50 professional groomers.", "specialties": ["Management", "Training", "Consulting"] },
+        { "name": "Tran Thi Binh", "role": "Head Groomer", "bio": "Artistic trimming expert with 7 years of experience and first prize at Grooming Vietnam 2023.", "specialties": ["Artistic trimming", "Styling", "Fur dyeing"] },
+        { "name": "Le Minh Cuong", "role": "Senior Groomer", "bio": "5 years of experience, a spa and pet dermatology specialist.", "specialties": ["Spa", "Skin care", "Therapy"] },
+        { "name": "Pham Thi Dung", "role": "Customer Service Manager", "bio": "Ensures the best experience for customers and their pets, always caring and thoughtful.", "specialties": ["Customer service", "Consulting", "Care"] }
+      ]
+    },
+    "milestones": {
+      "title": "Our Milestones",
+      "description": "Key moments in PetShop history",
+      "items": [
+        { "year": "2019", "title": "The beginning", "description": "Opened our first store with 2 staff and a passion for pet care." },
+        { "year": "2020", "title": "Growth", "description": "Expanded services, grew to 100+ customers and built a professional team." },
+        { "year": "2022", "title": "Upgrade", "description": "Invested in modern equipment and premium products from the US and Japan." },
+        { "year": "2024", "title": "Breakthrough", "description": "Reached 500+ loyal customers and won the Best Pet Spa Service 2024 award." },
+        { "year": "2026", "title": "Today", "description": "Continuing to grow, expanding services and committed to the best experience." }
+      ]
+    },
+    "cta": {
+      "title": "Come And Experience",
+      "description": "We are ready to welcome and care for your pet with all our love",
+      "bookNow": "Book now"
+    }
+  },
+
+  "newsPage": {
+    "title": "News & Tips",
+    "subtitle": "Tips from the PetShop team on pet care.",
+    "readMinutes": "min read",
+    "lifestyleTitle": "Lifestyle",
+    "lifestyleSubtitle": "Topics that make life with your pet more complete and peaceful.",
+    "close": "Close"
+  },
+
+  "news": {
+    "featured": {
+      "category": "Pet care",
+      "title": "Why healthy teeth help your pet live longer",
+      "description": "Worried about your pet's breath? Proper oral care not only reduces odor but also prevents heart, liver and kidney disease in dogs and cats.",
+      "content": "Oral care is about much more than breath. Long-term tartar buildup lets bacteria enter the bloodstream and attack your pet's heart, liver and kidneys.\n\nBrush your pet's teeth 2–3 times a week with dedicated toothpaste, and schedule an oral check every 6 months.\n\nAt PetShop, our deep oral hygiene service removes light tartar and advises on the right care for each breed.",
+      "readMinutes": 5
+    },
+    "lifestyle": {
+      "category": "Lifestyle",
+      "title": "Balancing life and time for your pet",
+      "description": "Small habits that help even busy owners care for their pet well every day without feeling overwhelmed.",
+      "content": "A busy life does not mean giving your pet less attention. Just 15 minutes a day of brushing, walking or play is enough for your pet to feel loved.\n\nSet a fixed care schedule — bath, trimming, hygiene — so you never forget and always keep your pet healthy and clean.",
+      "readMinutes": 6
+    },
+    "sidebar": [
+      { "category": "Traveling with pets", "title": "Keeping your pet safe on a long trip", "content": "Before a long trip, bring water, familiar food and a well-fitting carrier. Stop every 2–3 hours so your pet can move and drink.\n\nDo not forget vaccination records and an ID tag with your contact phone number.", "readMinutes": 4 },
+      { "category": "Pet care", "title": "5 common mistakes when bathing your dog at home", "content": "Bathing too often, using human shampoo, getting water in the ears, not brushing out tangles and not drying thoroughly are common mistakes.\n\nBathe every 2–4 weeks with dedicated shampoo and always dry the ears well.", "readMinutes": 5 },
+      { "category": "Nutrition", "title": "5 seemingly harmless foods that harm cats", "content": "Onion, garlic, grapes, chocolate and cow milk can all harm cats even though they look harmless.\n\nIf you suspect your cat ate any of these, contact a vet immediately instead of treating at home.", "readMinutes": 11 },
+      { "category": "Pet care", "title": "How PetShop contacts you — and how we never will", "content": "We only call or message via Zalo at 0971 616 634 to confirm appointments.\n\nPetShop never asks for your password, OTP code or a bank transfer deposit via message.", "readMinutes": 10 },
+      { "category": "Lifestyle", "title": "Understanding the real cost of owning a pet", "content": "Pet costs fall into three main groups: food, preventive healthcare and grooming.\n\nA monthly budget keeps you in control and avoids surprises when your pet gets sick.", "readMinutes": 5 },
+      { "category": "Lifestyle", "title": "Letting go of the pressure to buy expensive pet items", "content": "Pets do not need many expensive accessories — what they need most is your time and attention.\n\nChoose the essentials with good quality instead of chasing trends.", "readMinutes": 4 },
+      { "category": "Lifestyle", "title": "When should you take your cat to the spa?", "content": "Cats groom themselves, so they rarely need bathing. Take your cat to the spa when their coat is matted, smelly, or a vet recommends medicated shampoo.", "readMinutes": 6 }
+    ]
+  },
+
+  "auth": {
+    "login": "Sign in",
+    "loginLoading": "Signing in...",
+    "loginFailed": "Sign in failed",
+    "wrongCredentials": "Incorrect username or password",
+    "identifierPlaceholder": "Username or email",
+    "passwordPlaceholder": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Do not have an account?",
+    "register": "Register",
+    "registerLoading": "Processing...",
+    "registerFailed": "Registration failed",
+    "emailTaken": "Email already in use",
+    "fullNamePlaceholder": "Full name",
+    "phonePlaceholder": "Phone number",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder2": "Password (at least 6 characters)",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Sign in"
+  },
+
+  "accountPage": {
+    "loading": "Loading...",
+    "group": "Group",
+    "adminPanel": "Go to admin panel",
+    "logout": "Sign out",
+    "bookingHistory": "Booking history",
+    "noBookings": "You have no appointments yet.",
+    "bookNow": "Book now",
+    "viewServices": "View services",
+    "viewServicesDesc": "List of spa & grooming services",
+    "pricing": "Pricing",
+    "pricingDesc": "Prices by pet size"
+  }
+}

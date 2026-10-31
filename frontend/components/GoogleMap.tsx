@@ -1,3 +1,7 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
 interface GoogleMapProps {
   latitude?: number;
   longitude?: number;
@@ -6,12 +10,15 @@ interface GoogleMapProps {
 }
 
 export default function GoogleMap({
-  latitude = 21.0050,
-  longitude = 105.8250,
+  latitude = 21.005,
+  longitude = 105.825,
   address = "7 Chùa Bộc, Đống Đa, Hà Nội",
   height = "400px",
 }: GoogleMapProps) {
-  const mapUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&z=16&hl=vi&output=embed`;
+  const locale = useLocale();
+  const t = useTranslations("map");
+
+  const mapUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&z=16&hl=${locale}&output=embed`;
 
   const directionUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
 
@@ -25,12 +32,12 @@ export default function GoogleMap({
         allowFullScreen
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
-        title={`Bản đồ - ${address}`}
+        title={`${t("title")} - ${address}`}
       />
       <div className="bg-white p-4 border-t">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">PetShop - Spa & Grooming</h3>
+            <h3 className="font-semibold text-gray-900">{t("title")}</h3>
             <p className="text-sm text-gray-600 mt-1">{address}</p>
           </div>
           <a
@@ -39,7 +46,7 @@ export default function GoogleMap({
             rel="noopener noreferrer"
             className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors whitespace-nowrap"
           >
-            Chỉ đường
+            {t("direction")}
           </a>
         </div>
       </div>

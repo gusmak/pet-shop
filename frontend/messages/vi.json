@@ -1,0 +1,424 @@
+{
+  "meta": {
+    "title": "PetShop - Spa & Grooming Thú Cưng Chuyên Nghiệp",
+    "description": "Dịch vụ spa, grooming, cắt tỉa lông chuyên nghiệp cho thú cưng. Đặt lịch online dễ dàng, chăm sóc tận tâm.",
+    "keywords": ["pet shop", "spa thú cưng", "grooming chó mèo", "cắt tỉa lông", "tắm spa"]
+  },
+
+  "common": {
+    "time": { "hour": "giờ", "minute": "phút" },
+    "nav": {
+      "home": "Trang chủ",
+      "services": "Dịch vụ",
+      "pricing": "Bảng giá",
+      "news": "Tin tức",
+      "about": "Về chúng tôi",
+      "contact": "Liên hệ"
+    },
+    "tagline": "Spa & Grooming",
+    "topbar": { "hours": "Giờ mở cửa: 8:00 - 20:00 (T2 - CN)" },
+    "header": {
+      "account": "Tài khoản",
+      "admin": "Quản trị",
+      "login": "Đăng nhập",
+      "logout": "Đăng xuất",
+      "bookNow": "Đặt lịch ngay"
+    },
+    "footer": {
+      "about": "Dịch vụ spa và grooming chuyên nghiệp cho thú cưng. Đội ngũ giàu kinh nghiệm, tận tâm chăm sóc bé cưng của bạn.",
+      "services": "Dịch vụ",
+      "spa": "Tắm & Spa",
+      "grooming": "Cắt tỉa & Grooming",
+      "specialCare": "Chăm sóc đặc biệt",
+      "onlineBooking": "Đặt lịch online",
+      "contact": "Liên hệ",
+      "hours": "Giờ mở cửa",
+      "weekday": "Thứ 2 - Chủ nhật",
+      "holiday": "Nghỉ lễ theo thông báo",
+      "copyright": "© 2026 PetShop. Tất cả quyền được bảo lưu."
+    },
+    "widget": {
+      "call": "Gọi ngay",
+      "zalo": "Chat Zalo",
+      "hotline": "Gọi hotline"
+    }
+  },
+
+  "home": {
+    "hero": {
+      "badge": "Spa & Grooming chuyên nghiệp",
+      "titlePrefix": "Chăm sóc",
+      "titleHighlight": "thú cưng",
+      "titleSuffix": "như người trong gia đình",
+      "description": "Tắm spa, cắt tỉa, chăm sóc chuyên sâu bởi đội ngũ giàu kinh nghiệm. Đặt lịch online chỉ vài bước, bé cưng của bạn sẽ được yêu thương đúng cách.",
+      "bookNow": "Đặt lịch ngay",
+      "floatingCustomer": "500+ khách hàng",
+      "floatingTrust": "tin tưởng sử dụng",
+      "floatingPrice": "Tắm spa từ 150K"
+    },
+    "stats": [
+      { "value": "500+", "label": "khách hàng" },
+      { "value": "6", "label": "dịch vụ" },
+      { "value": "8–20h", "label": "mỗi ngày" }
+    ],
+    "quickInfo": [
+      { "label": "Giờ mở cửa", "value": "8:00 – 20:00, Thứ 2 – CN" },
+      { "label": "Hotline", "value": "0971 616 634" },
+      { "label": "Địa chỉ", "value": "7 Chùa Bộc, Đống Đa, Hà Nội" }
+    ],
+    "services": {
+      "eyebrow": "Dịch vụ",
+      "title": "Mọi thứ bé cần để xinh và khỏe",
+      "description": "Đa dạng dịch vụ chăm sóc chuyên nghiệp cho thú cưng của bạn.",
+      "from": "Từ",
+      "viewDetails": "Xem chi tiết",
+      "viewAll": "Xem tất cả dịch vụ",
+      "items": [
+        { "title": "Tắm & Spa", "description": "Tắm gội, massage thư giãn với sản phẩm cao cấp, an toàn cho da và lông của bé.", "price": "150K" },
+        { "title": "Cắt tỉa & Grooming", "description": "Cắt tỉa, tạo kiểu chuyên nghiệp theo giống và theo mong muốn của bạn.", "price": "200K" },
+        { "title": "Chăm sóc đặc biệt", "description": "Vệ sinh răng miệng, vắt tuyến hôi và chăm sóc chuyên sâu cho bé.", "price": "100K" }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Quy trình",
+      "title": "Đặt lịch chỉ trong 3 bước",
+      "items": [
+        { "title": "Đặt lịch online", "description": "Chọn dịch vụ, ngày và giờ phù hợp chỉ trong chưa đầy một phút." },
+        { "title": "Nhận xác nhận", "description": "Chúng tôi gọi hoặc nhắn tin xác nhận lịch hẹn trong vòng 30 phút." },
+        { "title": "Bé được chăm sóc", "description": "Đưa bé đến cửa hàng, nhận lại một bé cưng sạch thơm và thật vui." }
+      ]
+    },
+    "features": {
+      "eyebrow": "Vì sao chọn PetShop",
+      "title": "Cam kết cho từng bé cưng",
+      "items": [
+        { "title": "Đội ngũ chuyên nghiệp", "description": "Groomer giàu kinh nghiệm, được đào tạo bài bản." },
+        { "title": "Tận tâm như gia đình", "description": "Nhẹ nhàng, kiên nhẫn với từng bé, kể cả bé nhút nhát." },
+        { "title": "Sản phẩm an toàn", "description": "Sữa tắm và dụng cụ phù hợp từng loại da, từng giống." },
+        { "title": "Linh hoạt thời gian", "description": "Mở cửa 8:00 – 20:00 cả tuần, đặt lịch trực tuyến mọi lúc." }
+      ]
+    },
+    "cta": {
+      "title": "Sẵn sàng chăm sóc bé cưng?",
+      "description": "Đặt lịch ngay hôm nay để nhận ưu đãi 10% cho lần đầu sử dụng dịch vụ.",
+      "bookOnline": "Đặt lịch online",
+      "chatZalo": "Chat Zalo"
+    },
+    "map": {
+      "eyebrow": "Địa chỉ",
+      "title": "Ghé thăm cửa hàng"
+    }
+  },
+
+  "testimonials": {
+    "eyebrow": "Đánh giá",
+    "title": "Khách hàng nói gì?",
+    "owner": "Chủ của",
+    "ariaPrev": "Đánh giá trước",
+    "ariaNext": "Đánh giá kế tiếp",
+    "ariaRating": "5 trên 5 sao",
+    "items": [
+      { "name": "Chị Hương", "pet": "Mèo Mimi", "content": "Dịch vụ tuyệt vời! Mimi rất thích được tắm ở đây, nhân viên rất nhẹ nhàng và chu đáo." },
+      { "name": "Anh Minh", "pet": "Chó Lucky", "content": "Lucky được cắt tỉa rất đẹp, cả nhà rất hài lòng. Chắc chắn sẽ quay lại lần sau!" },
+      { "name": "Chị Lan", "pet": "Chó Bông", "content": "Giá cả hợp lý, dịch vụ chuyên nghiệp. Bông luôn vui vẻ mỗi khi được đưa đến đây." },
+      { "name": "Chị Mai", "pet": "Mèo Tôm", "content": "Nhân viên tư vấn tận tình, còn chỉ mình cách chải lông tại nhà. Tôm về nhà sạch thơm cả tuần." },
+      { "name": "Anh Đức", "pet": "Chó Mực", "content": "Mực nhà mình vốn sợ tắm, vậy mà các bạn xử lý nhẹ nhàng nên bé hợp tác hẳn. Rất yên tâm." },
+      { "name": "Chị Ngọc", "pet": "Chó Bông Tuyết", "content": "Đặt lịch online nhanh, giá rõ ràng không phụ thu. Chắc chắn sẽ gắn bó lâu dài với PetShop." }
+    ]
+  },
+
+  "catalog": {
+    "categories": {
+      "spa-tam": "Spa & Tắm",
+      "cat-tia-grooming": "Cắt tỉa & Grooming",
+      "cham-soc-dac-biet": "Chăm sóc đặc biệt"
+    },
+    "services": {
+      "tam-ve-sinh-co-ban": {
+        "name": "Tắm vệ sinh cơ bản",
+        "description": "Tắm gội toàn thân với sữa tắm chuyên dụng, sấy khô, vệ sinh tai mắt mũi.",
+        "features": ["Tắm gội với sữa tắm phù hợp", "Sấy khô lông", "Vệ sinh tai", "Vệ sinh mắt mũi", "Chải lông"]
+      },
+      "tam-spa-cao-cap": {
+        "name": "Tắm spa cao cấp",
+        "description": "Trải nghiệm spa thư giãn với sản phẩm cao cấp, massage và dưỡng lông.",
+        "features": ["Tắm với sữa tắm cao cấp", "Massage thư giãn 15 phút", "Dưỡng lông với dầu xả", "Sấy tạo kiểu", "Nước hoa thơm nhẹ", "Vệ sinh tai mắt mũi"]
+      },
+      "cat-tia-long-co-ban": {
+        "name": "Cắt tỉa lông cơ bản",
+        "description": "Cắt tỉa gọn gàng, tạo form chuẩn theo giống.",
+        "features": ["Tắm gội trước khi cắt", "Cắt tỉa theo form chuẩn", "Cắt móng", "Vệ sinh tai", "Sấy khô và chải lông"]
+      },
+      "cat-tia-tao-kieu-nghe-thuat": {
+        "name": "Cắt tỉa tạo kiểu nghệ thuật",
+        "description": "Cắt tỉa theo các kiểu dáng đặc biệt, nghệ thuật theo yêu cầu.",
+        "features": ["Tư vấn kiểu dáng phù hợp", "Tắm gội cao cấp", "Cắt tỉa nghệ thuật", "Phụ kiện trang trí", "Chụp ảnh kỷ niệm"]
+      },
+      "ve-sinh-rang-mieng": {
+        "name": "Vệ sinh răng miệng",
+        "description": "Đánh răng, vệ sinh răng miệng chuyên sâu, phòng ngừa cao răng.",
+        "features": ["Kiểm tra răng miệng", "Đánh răng chuyên sâu", "Loại bỏ cao răng nhẹ", "Tư vấn chăm sóc răng"]
+      },
+      "vat-tuyen-hoi": {
+        "name": "Vắt tuyến hôi",
+        "description": "Vắt tuyến hôi, vệ sinh vùng hậu môn sạch sẽ.",
+        "features": ["Vắt tuyến hôi chuyên nghiệp", "Vệ sinh vùng hậu môn", "Kiểm tra sức khỏe"]
+      }
+    }
+  },
+
+  "servicesPage": {
+    "title": "Dịch Vụ Của Chúng Tôi",
+    "subtitle": "Đa dạng dịch vụ chăm sóc chuyên nghiệp, tận tâm cho thú cưng của bạn",
+    "all": "Tất cả",
+    "popular": "Phổ biến",
+    "priceBySize": "Bảng giá theo size",
+    "size": { "toy": "Nhỏ", "small": "Vừa", "medium": "TB", "large": "Lớn" },
+    "bookNow": "Đặt lịch ngay",
+    "ctaTitle": "Không tìm thấy dịch vụ bạn cần?",
+    "ctaDescription": "Liên hệ với chúng tôi để được tư vấn dịch vụ phù hợp nhất cho bé cưng",
+    "contactNow": "Liên hệ ngay",
+    "callNow": "Gọi 0971 616 634"
+  },
+
+  "pricingPage": {
+    "all": "Tất cả",
+    "badge": "Giảm 10% cho lần đầu sử dụng dịch vụ",
+    "title": "Bảng giá dịch vụ",
+    "subtitle": "Giá minh bạch theo kích thước thú cưng — không phát sinh, không phụ phí ẩn.",
+    "sizeTitle": "Phân loại kích thước thú cưng",
+    "sizes": [
+      { "label": "Siêu nhỏ", "weight": "dưới 3kg" },
+      { "label": "Nhỏ", "weight": "3–10kg" },
+      { "label": "Vừa", "weight": "10–25kg" },
+      { "label": "Lớn", "weight": "trên 25kg" }
+    ],
+    "fromPrice": "Giá từ",
+    "perSize": "theo kích thước thú cưng",
+    "popular": "Phổ biến",
+    "bookNow": "Đặt lịch ngay",
+    "promoTitle": "Ưu đãi dành cho khách quen",
+    "promos": [
+      { "title": "Lần đầu", "desc": "Giảm 10% cho lần sử dụng dịch vụ đầu tiên." },
+      { "title": "Combo 5 lần", "desc": "Mua trước 5 lần — giảm 15% tổng hóa đơn." },
+      { "title": "Khách thân thiết", "desc": "Từ lần thứ 5 trở đi, giảm thêm 10% mỗi lần." }
+    ],
+    "noteTitle": "Lưu ý",
+    "notes": [
+      "Giá trên chưa bao gồm VAT (nếu có).",
+      "Giá có thể thay đổi tùy theo tình trạng lông và da của thú cưng.",
+      "Thanh toán khi đến cửa hàng (COD) — chúng tôi liên hệ xác nhận trong 30 phút."
+    ],
+    "ctaTitle": "Cần tư vấn dịch vụ phù hợp?",
+    "ctaDescription": "Đội ngũ PetShop sẵn sàng hỗ trợ bạn chọn gói chăm sóc tốt nhất cho bé cưng.",
+    "chatZalo": "Chat Zalo"
+  },
+
+  "bookingPage": {
+    "title": "Đặt Lịch Online",
+    "subtitle": "Đặt lịch dễ dàng - Xác nhận nhanh chóng - Chăm sóc tận tâm",
+    "customerInfo": "Thông tin khách hàng",
+    "fullName": "Họ và tên",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "petInfo": "Thông tin thú cưng",
+    "petName": "Tên thú cưng",
+    "petType": "Loại thú cưng",
+    "petTypeDog": "Chó",
+    "petTypeCat": "Mèo",
+    "petTypeOther": "Khác",
+    "petSize": "Kích thước",
+    "sizes": {
+      "toy": "Nhỏ (dưới 3kg)",
+      "small": "Vừa (3-10kg)",
+      "medium": "Trung bình (10-25kg)",
+      "large": "Lớn (trên 25kg)"
+    },
+    "selectService": "Chọn dịch vụ",
+    "selectServiceHint": "Có thể chọn nhiều dịch vụ (mỗi nhóm một dịch vụ). Giá tính theo kích thước:",
+    "selectedServices": "Dịch vụ đã chọn",
+    "estimated": "Dự kiến",
+    "subtotal": "Tạm tính",
+    "dateTime": "Chọn ngày giờ",
+    "date": "Ngày đặt lịch",
+    "time": "Giờ hẹn",
+    "chooseTime": "Chọn giờ",
+    "notes": "Ghi chú (tùy chọn)",
+    "notesPlaceholder": "Ví dụ: Bé cần được chăm sóc nhẹ nhàng, bé sợ máy sấy...",
+    "paymentInfo": "Thông tin thanh toán",
+    "paymentNote": "Thanh toán khi đến cửa hàng (COD). Chúng tôi sẽ liên hệ xác nhận lịch hẹn trong 30 phút.",
+    "errorNoService": "Vui lòng chọn ít nhất một dịch vụ",
+    "errorGeneric": "Không thể đặt lịch, vui lòng thử lại",
+    "submit": "Đặt lịch ngay",
+    "submitting": "Đang gửi...",
+    "successTitle": "Đặt lịch thành công!",
+    "successCode": "Mã đặt lịch",
+    "successBody": "Chúng tôi sẽ liên hệ xác nhận trong 30 phút.",
+    "bookAnother": "Đặt thêm lịch",
+    "backHome": "Về trang chủ"
+  },
+
+  "contactPage": {
+    "title": "Liên Hệ Với Chúng Tôi",
+    "subtitle": "Hãy liên hệ để được tư vấn miễn phí về dịch vụ chăm sóc thú cưng",
+    "formTitle": "Gửi tin nhắn cho chúng tôi",
+    "fullName": "Họ và tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "subject": "Chủ đề",
+    "chooseSubject": "Chọn chủ đề",
+    "subjectBooking": "Đặt lịch dịch vụ",
+    "subjectPricing": "Hỏi về giá cả",
+    "subjectService": "Tư vấn dịch vụ",
+    "subjectFeedback": "Góp ý/Phản hồi",
+    "subjectOther": "Khác",
+    "message": "Tin nhắn",
+    "messagePlaceholder": "Nội dung tin nhắn...",
+    "sent": "Cảm ơn bạn! Chúng tôi sẽ phản hồi trong 24 giờ.",
+    "sending": "Đang gửi...",
+    "send": "Gửi tin nhắn",
+    "hotline": "Hotline",
+    "hotlineNote": "Tư vấn 24/7",
+    "zalo": "Zalo",
+    "zaloAction": "Chat ngay",
+    "zaloNote": "Phản hồi nhanh",
+    "emailLabel": "Email",
+    "emailNote": "Phản hồi trong 24h",
+    "hours": "Giờ mở cửa",
+    "hoursNote": "Thứ 2 - Chủ nhật",
+    "mapTitle": "Địa chỉ cửa hàng"
+  },
+
+  "map": {
+    "title": "PetShop - Spa & Grooming",
+    "direction": "Chỉ đường"
+  },
+
+  "aboutPage": {
+    "badge": "Về Chúng Tôi",
+    "titlePrefix": "Câu Chuyện",
+    "titleHighlight": "PetShop",
+    "titleSuffix": "",
+    "intro": "Từ niềm đam mê chăm sóc thú cưng, chúng tôi đã xây dựng một dịch vụ spa và grooming chuyên nghiệp, nơi mọi thú cưng đều được yêu thương và chăm sóc tận tâm.",
+    "stats": [
+      { "number": "500+", "label": "Khách hàng tin tưởng" },
+      { "number": "1000+", "label": "Lượt phục vụ" },
+      { "number": "5+", "label": "Năm kinh nghiệm" },
+      { "number": "4.9/5", "label": "Đánh giá trung bình" }
+    ],
+    "story": {
+      "title": "Hành Trình Của Chúng Tôi",
+      "p1": "PetShop được thành lập vào năm 2019 bởi anh Nguyễn Văn An - một người có niềm đam mê mãnh liệt với việc chăm sóc thú cưng. Sau nhiều năm làm việc trong ngành, anh nhận thấy nhu cầu về dịch vụ spa và grooming chuyên nghiệp, chất lượng cao cho thú cưng ngày càng tăng.",
+      "p2": "Với tâm huyết và kinh nghiệm, anh đã xây dựng PetShop trở thành điểm đến tin cậy của hàng trăm chủ thú cưng. Chúng tôi không chỉ cung cấp dịch vụ, mà còn mang đến trải nghiệm chăm sóc toàn diện, nơi mỗi thú cưng đều được đối xử như thành viên trong gia đình.",
+      "p3": "Sau 5 năm phát triển, PetShop đã phục vụ hơn 1000 lượt khách hàng, xây dựng đội ngũ groomer chuyên nghiệp và nhận được nhiều giải thưởng uy tín trong ngành."
+    },
+    "values": {
+      "title": "Giá Trị Cốt Lõi",
+      "description": "Những nguyên tắc định hướng mọi hoạt động của chúng tôi",
+      "items": [
+        { "title": "Yêu thương", "description": "Chúng tôi yêu thương mọi thú cưng như chính gia đình mình. Mỗi bé đều được chăm sóc tận tâm và chu đáo." },
+        { "title": "Chuyên nghiệp", "description": "Đội ngũ được đào tạo bài bản, cập nhật xu hướng mới nhất. Sản phẩm và dịch vụ đạt chuẩn quốc tế." },
+        { "title": "Tận tâm", "description": "Luôn đặt lợi ích của thú cưng lên hàng đầu. Tư vấn trung thực, dịch vụ chất lượng." },
+        { "title": "Đúng hẹn", "description": "Tôn trọng thời gian của khách hàng. Luôn hoàn thành dịch vụ đúng hẹn, không để khách chờ đợi." }
+      ]
+    },
+    "team": {
+      "title": "Đội Ngũ Của Chúng Tôi",
+      "description": "Những chuyên gia tận tâm, giàu kinh nghiệm",
+      "items": [
+        { "name": "Nguyễn Văn An", "role": "Founder & CEO", "bio": "10 năm kinh nghiệm trong ngành chăm sóc thú cưng. Đã đào tạo hơn 50 groomer chuyên nghiệp.", "specialties": ["Quản lý", "Đào tạo", "Tư vấn"] },
+        { "name": "Trần Thị Bình", "role": "Head Groomer", "bio": "Chuyên gia cắt tỉa nghệ thuật với 7 năm kinh nghiệm. Đạt giải Nhất cuộc thi Grooming Vietnam 2023.", "specialties": ["Cắt tỉa nghệ thuật", "Tạo kiểu", "Nhuộm lông"] },
+        { "name": "Lê Minh Cường", "role": "Senior Groomer", "bio": "5 năm kinh nghiệm, chuyên gia spa và chăm sóc da liễu cho thú cưng.", "specialties": ["Spa", "Chăm sóc da", "Trị liệu"] },
+        { "name": "Phạm Thị Dung", "role": "Customer Service Manager", "bio": "Đảm bảo trải nghiệm tốt nhất cho khách hàng và thú cưng. Luôn tận tâm và chu đáo.", "specialties": ["Dịch vụ khách hàng", "Tư vấn", "Chăm sóc"] }
+      ]
+    },
+    "milestones": {
+      "title": "Hành Trình Phát Triển",
+      "description": "Những cột mốc quan trọng trong lịch sử PetShop",
+      "items": [
+        { "year": "2019", "title": "Khởi đầu", "description": "Mở cửa hàng đầu tiên với 2 nhân viên và niềm đam mê chăm sóc thú cưng." },
+        { "year": "2020", "title": "Phát triển", "description": "Mở rộng dịch vụ, tăng số lượng khách hàng lên 100+ và xây dựng đội ngũ chuyên nghiệp." },
+        { "year": "2022", "title": "Nâng cấp", "description": "Đầu tư trang thiết bị hiện đại, nhập khẩu sản phẩm cao cấp từ Mỹ và Nhật Bản." },
+        { "year": "2024", "title": "Đột phá", "description": "Đạt 500+ khách hàng thân thiết, nhận giải thưởng 'Dịch vụ Spa Thú Cưng Tốt Nhất 2024'." },
+        { "year": "2026", "title": "Hiện tại", "description": "Tiếp tục phát triển, mở rộng dịch vụ và cam kết mang đến trải nghiệm tốt nhất." }
+      ]
+    },
+    "cta": {
+      "title": "Hãy Đến Và Trải Nghiệm",
+      "description": "Chúng tôi sẵn sàng chào đón và chăm sóc bé cưng của bạn với tất cả tình yêu thương",
+      "bookNow": "Đặt lịch ngay"
+    }
+  },
+
+  "newsPage": {
+    "title": "Tin tức & Kinh nghiệm",
+    "subtitle": "Chia sẻ từ đội ngũ PetShop về chăm sóc thú cưng.",
+    "readMinutes": "phút đọc",
+    "lifestyleTitle": "Phong cách sống",
+    "lifestyleSubtitle": "Những chủ đề giúp cuộc sống cùng thú cưng thêm trọn vẹn và nhẹ nhàng hơn.",
+    "close": "Đóng"
+  },
+
+  "auth": {
+    "login": "Đăng nhập",
+    "loginLoading": "Đang đăng nhập...",
+    "loginFailed": "Đăng nhập thất bại",
+    "wrongCredentials": "Tên tài khoản hoặc mật khẩu không đúng",
+    "identifierPlaceholder": "Tên tài khoản hoặc email",
+    "passwordPlaceholder": "Mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "noAccount": "Chưa có tài khoản?",
+    "register": "Đăng ký",
+    "registerLoading": "Đang xử lý...",
+    "registerFailed": "Đăng ký thất bại",
+    "emailTaken": "Email đã được sử dụng",
+    "fullNamePlaceholder": "Họ và tên",
+    "phonePlaceholder": "Số điện thoại",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder2": "Mật khẩu (tối thiểu 6 ký tự)",
+    "hasAccount": "Đã có tài khoản?",
+    "loginLink": "Đăng nhập"
+  },
+
+  "accountPage": {
+    "loading": "Đang tải...",
+    "group": "Nhóm",
+    "adminPanel": "Vào trang quản trị",
+    "logout": "Đăng xuất",
+    "bookingHistory": "Lịch sử đặt lịch",
+    "noBookings": "Bạn chưa có lịch hẹn nào.",
+    "bookNow": "Đặt lịch ngay",
+    "viewServices": "Xem dịch vụ",
+    "viewServicesDesc": "Danh sách dịch vụ spa & grooming",
+    "pricing": "Bảng giá",
+    "pricingDesc": "Giá theo kích thước thú cưng"
+  },
+
+  "news": {
+    "featured": {
+      "category": "Chăm sóc thú cưng",
+      "title": "Vì sao răng miệng khỏe mạnh giúp thú cưng sống lâu hơn",
+      "description": "Bạn lo lắng về hơi thở của bé cưng? Chăm sóc răng miệng đúng cách không chỉ giảm mùi hôi mà còn ngăn ngừa bệnh tim, gan và thận cho chó mèo.",
+      "content": "Răng miệng không chỉ liên quan đến hơi thở. Cao răng tích tụ lâu ngày tạo điều kiện cho vi khuẩn theo đường máu tấn công tim, gan và thận của chó mèo.\n\nHãy đánh răng cho bé 2–3 lần mỗi tuần bằng kem chuyên dụng, kết hợp kiểm tra răng miệng định kỳ 6 tháng một lần.\n\nTại PetShop, dịch vụ vệ sinh răng miệng chuyên sâu giúp loại bỏ cao răng nhẹ và tư vấn cách chăm sóc phù hợp với từng giống.",
+      "readMinutes": 5
+    },
+    "lifestyle": {
+      "category": "Phong cách sống",
+      "title": "Cân bằng cuộc sống và thời gian cho thú cưng",
+      "description": "Những thói quen nhỏ giúp bạn dù bận rộn vẫn chăm sóc bé cưng chu đáo mỗi ngày mà không cảm thấy quá tải.",
+      "content": "Cuộc sống bận rộn không có nghĩa là phải giảm bớt sự quan tâm đến thú cưng. Chỉ cần 15 phút mỗi ngày cho việc chải lông, đi dạo hay chơi đùa, bé cưng đã cảm nhận được sự yêu thương.\n\nLên lịch chăm sóc cố định — tắm spa, cắt tỉa, vệ sinh — giúp bạn không bỏ quên và giữ bé luôn khỏe mạnh, sạch sẽ.",
+      "readMinutes": 6
+    },
+    "sidebar": [
+      { "category": "Du lịch cùng pet", "title": "Giữ thú cưng an toàn khi đi du lịch xa", "content": "Trước chuyến đi dài, hãy chuẩn bị nước, thức ăn quen thuộc và một chiếc lồng/túi vận chuyển vừa vặn. Dừng nghỉ mỗi 2–3 giờ để bé vận động và uống nước.\n\nĐừng quên mang theo giấy tờ tiêm phòng và thẻ tên ghi số điện thoại liên hệ.", "readMinutes": 4 },
+      { "category": "Chăm sóc thú cưng", "title": "5 lỗi phổ biến khi tắm cho chó tại nhà", "content": "Tắm quá thường xuyên, dùng sữa tắm người, để nước vào tai, không chải rối trước khi tắm và không sấy khô là những lỗi dễ gặp.\n\nHãy tắm 2–4 tuần một lần bằng sữa tắm chuyên dụng và luôn lau khô kỹ vùng tai.", "readMinutes": 5 },
+      { "category": "Dinh dưỡng", "title": "5 loại thức ăn \"tưởng lành\" gây hại cho mèo", "content": "Hành, tỏi, nho, sô-cô-la và sữa bò đều có thể gây hại cho mèo dù trông có vẻ vô tội.\n\nNếu nghi ngờ bé ăn phải, hãy liên hệ bác sĩ thú y ngay thay vì tự xử lý tại nhà.", "readMinutes": 11 },
+      { "category": "Chăm sóc thú cưng", "title": "Cách PetShop liên hệ với bạn — và cách chúng tôi không làm", "content": "Chúng tôi chỉ gọi hoặc nhắn qua Zalo số 0971 616 634 để xác nhận lịch hẹn.\n\nPetShop không bao giờ yêu cầu bạn cung cấp mật khẩu, mã OTP hay chuyển khoản đặt cọc qua tin nhắn.", "readMinutes": 10 },
+      { "category": "Phong cách sống", "title": "Hiểu đúng về chi phí nuôi thú cưng", "content": "Chi phí nuôi thú cưng gồm ba nhóm chính: thức ăn, y tế phòng bệnh và chăm sóc (tắm, cắt tỉa).\n\nLập ngân sách theo tháng giúp bạn chủ động hơn và không bị bất ngờ khi bé ốm đau.", "readMinutes": 5 },
+      { "category": "Phong cách sống", "title": "Gỡ bỏ áp lực \"phải mua đồ đắt\" cho thú cưng", "content": "Thú cưng không cần quá nhiều phụ kiện đắt tiền — thứ chúng cần nhất là thời gian và sự quan tâm của bạn.\n\nChọn những món thiết yếu, chất lượng tốt thay vì chạy theo mốt.", "readMinutes": 4 },
+      { "category": "Phong cách sống", "title": "Khi nào nên đưa mèo đi spa?", "content": "Mèo tự liếm lông nên ít khi cần tắm. Hãy đưa bé đi spa khi lông bết dính, có mùi, hoặc bác sĩ khuyên dùng dầu gội dược liệu.", "readMinutes": 6 }
+    ]
+  }
+}

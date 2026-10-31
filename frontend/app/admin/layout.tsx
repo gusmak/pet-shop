@@ -19,8 +19,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Chưa đăng nhập -> trang đăng nhập; khách hàng không có khu quản trị -> trang tài khoản.
   useEffect(() => {
     if (loading) return;
-    if (!user) router.replace('/login');
-    else if (!allowedArea) router.replace('/account');
+    if (!user) router.replace("/vi/login");
+    else if (!allowedArea) router.replace("/vi/account");
   }, [loading, user, allowedArea, router]);
 
   if (loading || !user || !allowedArea) {
@@ -80,13 +80,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 space-y-2">
-          <Link href="/" className="block text-center text-sm text-gray-500 hover:text-primary-600">
+          <Link href="/vi" className="block text-center text-sm text-gray-500 hover:text-primary-600">
             ← Về trang chủ
           </Link>
           <button
             onClick={() => {
               logout();
-              router.push('/login');
+              router.push('/vi/login');
             }}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 text-gray-700 hover:text-red-600 transition-colors"
           >
