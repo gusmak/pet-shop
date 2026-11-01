@@ -450,6 +450,7 @@ INSERT INTO permissions (id, key, label) VALUES
   (gen_random_uuid()::text, 'customers.view',    'Xem khách hàng'),
   (gen_random_uuid()::text, 'staff.manage',      'Quản lý nhân viên'),
   (gen_random_uuid()::text, 'groups.manage',     'Quản lý nhóm & tài khoản'),
+  (gen_random_uuid()::text, 'settings.manage',   'Quản lý cấu hình hệ thống'),
   (gen_random_uuid()::text, 'account.view',      'Xem tài khoản & lịch sử đặt lịch của mình')
 ON CONFLICT (key) DO NOTHING;
 

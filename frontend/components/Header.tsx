@@ -59,8 +59,8 @@ export default function Header() {
     <header className="bg-white shadow-sm sticky top-0 z-40">
       {/* Top Bar */}
       <div className="bg-primary-600 text-white py-2 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between text-sm">
+          <div className="hidden sm:flex items-center gap-4">
             <a href="tel:0971616634" className="flex items-center gap-1 hover:text-primary-100">
               <Phone className="w-4 h-4" />
               <span className="hidden sm:inline">0971 616 634</span>
@@ -70,7 +70,7 @@ export default function Header() {
               <span className="hidden sm:inline">Zalo Chat</span>
             </a>
           </div>
-          <div className="hidden md:block">
+          <div>
             <span>{t("topbar.hours")}</span>
           </div>
         </div>
@@ -90,25 +90,33 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href as any}
-                className={`font-medium transition-colors ${
-                  isActiveLink(item.href, pathname)
-                    ? "text-primary-600 font-semibold"
-                    : "text-gray-700 hover:text-primary-600"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <LanguageSwitcher />
+          {/* Cụm bên phải: nav (desktop) + language + user + đặt lịch + menu icon (mobile/tablet) */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Desktop navigation (chỉ hiện từ lg trở lên) */}
+            <nav className="hidden lg:flex items-center gap-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href as any}
+                  className={`font-medium transition-colors ${
+                    isActiveLink(item.href, pathname)
+                      ? "text-primary-600 font-semibold"
+                      : "text-gray-700 hover:text-primary-600"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
 
+            {/* Language switcher (tablet trở lên) */}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+
+            {/* User (tablet trở lên) */}
             {!loading && (
-              <>
+              <div className="hidden md:block">
                 {user ? (
                   <div className="relative" ref={userMenuRef}>
                     <button
@@ -160,30 +168,31 @@ export default function Header() {
                     <User className="h-5 w-5" />
                   </Link>
                 )}
-              </>
+              </div>
             )}
 
+            {/* Đặt lịch ngay (sau danh sách menu, tablet trở lên) */}
             <Link
               href="/booking"
-              className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full font-semibold transition-colors"
+              className="hidden md:inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full font-semibold transition-colors"
             >
               {t("header.bookNow")}
             </Link>
-          </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            {/* Menu icon (mobile + tablet, ngoài cùng bên phải) */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile + Tablet Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-6 border-t bg-white">
+          <div className="lg:hidden py-6 border-t bg-white">
             <div className="flex flex-col gap-3">
               {navigation.map((item) => (
                 <Link
@@ -199,8 +208,10 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Chỉ cần trên mobile (<md): từ tablet các mục này đã có trên thanh header */}
               {!loading && (
-                <>
+                <div className="md:hidden">
                   {accountLink.admin ? (
                     <NextLink
                       href={accountLink.href}
@@ -225,15 +236,16 @@ export default function Header() {
                       {t("header.logout")}
                     </button>
                   )}
-                </>
+                </div>
               )}
-              <div className="flex items-center justify-center px-5">
+
+              <div className="md:hidden flex items-center justify-center px-5">
                 <LanguageSwitcher />
               </div>
               <Link
                 href="/booking"
                 onClick={() => setIsMenuOpen(false)}
-                className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-4 rounded-xl font-semibold text-center mt-3 transition-all min-h-[48px] flex items-center justify-center shadow-md"
+                className="md:hidden bg-primary-600 hover:bg-primary-700 text-white px-5 py-4 rounded-xl font-semibold text-center mt-3 transition-all min-h-[48px] flex items-center justify-center shadow-md"
               >
                 {t("header.bookNow")}
               </Link>

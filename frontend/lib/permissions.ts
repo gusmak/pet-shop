@@ -26,6 +26,7 @@ export const PERMISSIONS = [
   { key: 'customers.view', label: 'Xem khách hàng' },
   { key: 'staff.manage', label: 'Quản lý nhân viên' },
   { key: 'groups.manage', label: 'Quản lý nhóm & tài khoản' },
+  { key: 'settings.manage', label: 'Quản lý cấu hình hệ thống' },
   { key: 'account.view', label: 'Xem tài khoản & lịch sử đặt lịch của mình' },
 ] as const;
 
@@ -79,6 +80,7 @@ export const ADMIN_NAV: NavItem[] = [
   { href: '/admin/users', icon: '👥', label: 'Khách hàng', permission: 'customers.view' },
   { href: '/admin/staff', icon: '👨‍💼', label: 'Nhân viên', permission: 'staff.manage' },
   { href: '/admin/groups', icon: '🛡️', label: 'Nhóm & phân quyền', permission: 'groups.manage' },
+  { href: '/admin/settings', icon: '⚙️', label: 'Hệ thống', permission: 'settings.manage' },
 ];
 
 // Trang đích sau khi đăng nhập.

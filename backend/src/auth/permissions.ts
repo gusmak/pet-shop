@@ -10,6 +10,7 @@ export const PERMISSIONS = [
   { key: 'customers.view', label: 'Xem khách hàng' },
   { key: 'staff.manage', label: 'Quản lý nhân viên' },
   { key: 'groups.manage', label: 'Quản lý nhóm & tài khoản' },
+  { key: 'settings.manage', label: 'Quản lý cấu hình hệ thống' },
   { key: 'account.view', label: 'Xem tài khoản & lịch sử đặt lịch của mình' },
 ] as const;
 

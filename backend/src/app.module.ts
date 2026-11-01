@@ -12,6 +12,7 @@ import { StaffModule } from './staff/staff.module';
 import { CustomersModule } from './customers/customers.module';
 import { GroupsModule } from './groups/groups.module';
 import { StatsModule } from './stats/stats.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { StatsModule } from './stats/stats.module';
     CustomersModule,
     GroupsModule,
     StatsModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

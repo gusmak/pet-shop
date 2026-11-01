@@ -29,6 +29,9 @@ export declare const PERMISSIONS: readonly [{
     readonly key: "groups.manage";
     readonly label: "Quản lý nhóm & tài khoản";
 }, {
+    readonly key: "settings.manage";
+    readonly label: "Quản lý cấu hình hệ thống";
+}, {
     readonly key: "account.view";
     readonly label: "Xem tài khoản & lịch sử đặt lịch của mình";
 }];

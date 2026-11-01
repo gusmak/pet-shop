@@ -48,6 +48,21 @@ interface ApiService {
   variants: { size: string; price: number }[];
 }
 
+// Khung giờ hẹn sinh từ giờ mở/đóng cửa; bỏ mốc 12:00 (nghỉ trưa 12:00–13:00).
+const DEFAULT_OPEN_TIME = "08:00";
+const DEFAULT_CLOSE_TIME = "20:00";
+const LUNCH_BREAK_HOUR = 12;
+
+function buildTimeSlots(openTime: string, closeTime: string): string[] {
+  const hourOf = (t: string) => Number(t.slice(0, 2));
+  const slots: string[] = [];
+  for (let h = hourOf(openTime); h < hourOf(closeTime); h++) {
+    if (h === LUNCH_BREAK_HOUR) continue;
+    slots.push(`${String(h).padStart(2, "0")}:00`);
+  }
+  return slots;
+}
+
 export default function BookingPage() {
   const locale = useLocale();
   const t = useTranslations("bookingPage");
@@ -141,7 +156,21 @@ export default function BookingPage() {
     if (dateRef.current) dateRef.current.min = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }, []);
 
-  const timeSlots = ["08:00", "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+  const [hours, setHours] = useState<string[]>(buildTimeSlots(DEFAULT_OPEN_TIME, DEFAULT_CLOSE_TIME));
+
+  // Giờ hẹn khả dụng theo giờ mở/đóng cửa từ database (bỏ qua khi chạy demo).
+  useEffect(() => {
+    if (DEMO_MODE) return;
+    let cancelled = false;
+    (async () => {
+      const res = await api.get<{ openTime: string; closeTime: string }>("/api/settings");
+      if (cancelled || !res.data) return;
+      setHours(buildTimeSlots(res.data.openTime, res.data.closeTime));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -424,7 +453,7 @@ export default function BookingPage() {
                   className={inputCls}
                 >
                   <option value="">{t("chooseTime")}</option>
-                  {timeSlots.map((slot) => (
+                  {hours.map((slot) => (
                     <option key={slot} value={slot}>
                       {slot}
                     </option>

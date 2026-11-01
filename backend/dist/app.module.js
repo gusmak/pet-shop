@@ -21,6 +21,7 @@ const staff_module_1 = require("./staff/staff.module");
 const customers_module_1 = require("./customers/customers.module");
 const groups_module_1 = require("./groups/groups.module");
 const stats_module_1 = require("./stats/stats.module");
+const settings_module_1 = require("./settings/settings.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             customers_module_1.CustomersModule,
             groups_module_1.GroupsModule,
             stats_module_1.StatsModule,
+            settings_module_1.SettingsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
