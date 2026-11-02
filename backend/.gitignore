@@ -5,5 +5,6 @@
 .env
 
 # uploaded files (local dev)
-/uploads 
-./uploads
+/uploads
+
+dist/

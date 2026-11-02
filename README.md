@@ -1,199 +1,189 @@
 # 🐾 PetShop — Spa & Grooming Thú Cưng
 
-Website đặt lịch dịch vụ spa và grooming cho thú cưng. Bao gồm trang công khai cho khách hàng và admin panel quản lý.
+Website đặt lịch spa / grooming cho thú cưng, gồm trang công khai (khách hàng) và admin panel quản lý.
 
 ## Tech Stack
 
 | Tầng | Công nghệ | Phiên bản |
 |------|-----------|-----------|
 | Frontend | Next.js + React + Tailwind CSS | 16.4.3 / 19.3.0 / 4.x |
+| i18n | next-intl | 4.14.9 |
+| Rich-text | TipTap (+ DOMPurify để sanitize) | 3.x |
 | Backend | NestJS + Prisma | 12.x / 5.22.0 |
-| Database | PostgreSQL | 15+ |
-| Runtime | Node.js | 20+ |
+| Database | PostgreSQL | 16 (Docker) |
+| Runtime | Node.js | 20 |
 
 ## Cấu trúc thư mục
 
 ```
 pet-shop/
-├── frontend/                    # Next.js frontend (port 3002)
-│   ├── app/
-│   │   ├── page.tsx        # Trang chủ
-│   │   ├── dich-vu/        # Trang dịch vụ
-│   │   ├── bang-gia/       # Trang bảng giá
-│   │   ├── dat-lich/       # Trang đặt lịch
-│   │   ├── lien-he/        # Trang liên hệ
-│   │   ├── ve-chung-toi/   # Trang giới thiệu
-│   │   └── admin/          # Admin panel (login, dashboard, services, bookings, users, staff)
-│   └── components/         # Header, Footer, ContactWidget, GoogleMap
-├── backend/                # NestJS API (port 8000)
-│   ├── prisma/schema.prisma
-│   └── src/
-│       ├── services/       # API dịch vụ
-│       ├── bookings/       # API đặt lịch
-│       ├── contact/        # API liên hệ
-│       ├── prisma/         # Prisma service
-│       └── admin/          # AdminJS module (legacy)
-├── schema.sql              # SQL schema đầy đủ
-└── DEPLOYMENT.md           # Hướng dẫn deploy VPS
+├── frontend/                        # Next.js — Docker: 3006, dev: 3002
+│   ├── app/[locale]/                # Trang công khai (next-intl: /vi, /en)
+│   │   ├── page.tsx                 # Trang chủ
+│   │   ├── services/ pricing/ booking/ contact/ about/
+│   │   ├── news/ + news/[slug]/     # Tin tức (danh sách + chi tiết)
+│   │   └── login/ register/ account/
+│   ├── app/admin/                   # Admin panel (layout riêng)
+│   │   ├── page.tsx                 # Dashboard
+│   │   └── services/ bookings/ posts/ users/ staff/ groups/ settings/
+│   ├── components/                  # Header, Footer, SiteChrome, RichTextEditor…
+│   ├── lib/                         # api.ts (fetch + JWT), useAuth, permissions…
+│   ├── messages/{vi,en}.json        # Bản dịch
+│   └── i18n/                        # Cấu hình next-intl
+├── backend/                         # NestJS API — Docker: 8060, dev: 8000
+│   ├── prisma/schema.prisma         # Nguồn chuẩn của DB
+│   ├── uploads/                     # Ảnh upload (runtime, KHÔNG commit lên git)
+│   └── src/                         # modules: auth, services, bookings, posts, uploads…
+├── schema.sql                       # DDL + seed (tự chạy khi DB volume còn trống)
+├── docker-compose.yml               # postgres + backend + frontend
+├── .env.example                     # Mẫu biến môi trường (sao chép sang .env khi deploy)
+├── backup-db.cmd / restore-db.cmd   # Script backup/restore database (Windows)
+└── DEPLOYMENT.md / TECH_STACK.md / DATABASE_SCHEMA.md
 ```
 
-## Cài đặt & Chạy
+## Cài đặt & Chạy nhanh
 
-### Yêu cầu
-- Node.js 20+
-- PostgreSQL 15+
-
-### Backend
+### Cách 1: Docker (khuyên dùng — giống hệt môi trường VPS)
 
 ```bash
+# 1) Tạo file biến môi trường (chỉ cần khi deploy; local có thể bỏ qua để dùng giá trị mặc định)
+cp .env.example .env      # Linux/macOS
+copy .env.example .env    # Windows
+
+# 2) Build + chạy toàn bộ stack
+docker compose up -d --build
+```
+
+| Dịch vụ | Cổng host | Ghi chú |
+|---------|-----------|---------|
+| Frontend | **3006** | `NEXT_PUBLIC_API_URL` trỏ tới backend |
+| Backend API | **8060** | serve tĩnh `/uploads/<file>` |
+| PostgreSQL | **5433** | schema `pet-shop`, seed tự động lần chạy đầu |
+
+Ghé thăm: `http://localhost:3006/vi` (hoặc `/en`).
+
+### Cách 2: Chạy thủ công (không Docker)
+
+```bash
+# Backend
 cd backend
 npm install
 npx prisma generate
-npx prisma db push && npm run seed   # hoặc: psql -d petshop -f ../schema.sql
-npm run start:dev
-```
+npx prisma db push && npm run seed     # hoặc: psql -d petshop -f ../schema.sql
+npm run start:dev                      # http://localhost:8000
 
-Backend chạy tại `http://localhost:8000`
-
-### Frontend
-
-```bash
+# Frontend (terminal khác)
 cd frontend
 npm install
-npm run dev
+npm run dev                            # http://localhost:3002
 ```
 
-Frontend chạy tại `http://localhost:3002`
+## Biến môi trường
 
-### Môi trường
+**Root `.env` (Docker)** — copy từ `.env.example`:
 
-**backend/.env:**
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/pshop?schema=pet-shop"
-JWT_SECRET=<chuỗi ngẫu nhiên — bắt buộc khi production>
+POSTGRES_DB=petshop
+POSTGRES_USER=petshop
+POSTGRES_PASSWORD=thay-bang-mat-khau-manh
+JWT_SECRET=thay-bang-chuoi-ngau-nhien          # bắt buộc đổi khi production
+FRONTEND_URL=https://domain.com                # origin FE (CORS), phân tách bằng dấu phẩy
+NEXT_PUBLIC_API_URL=https://api.domain.com     # FE gọi BE — được "nướng" lúc build
+```
+
+**`backend/.env` (chạy thủ công)** — xem `backend/.env.example`:
+
+```env
+DATABASE_URL="postgresql://postgres:password@localhost:5432/petshop?schema=pet-shop"
 PORT=8000
 FRONTEND_URL=http://localhost:3002
+JWT_SECRET=<ngẫu nhiên>
+SUPER_ADMIN_PASSWORD=          # chỉ dùng khi npm run seed
+SEED_DEMO_ACCOUNTS=true
 ```
 
 ## API Endpoints
 
-Quyền (🔐) được kiểm tra ở backend mỗi request (`@Auth(...)`), không chỉ ở FE.
+Quyền (🔐) kiểm tra tại backend ở mỗi request (`@Auth(...)`), không phải chỉ ẩn/hiện ở FE.
 
 | Method | Endpoint | Quyền | Mô tả |
 |--------|----------|-------|-------|
-| POST | `/api/auth/login` | công khai | Đăng nhập chung (nhân viên: email; khách: email/SĐT) |
+| POST | `/api/auth/login` | công khai | Đăng nhập (staff: email; khách: email/SĐT) |
 | POST | `/api/auth/register` | công khai | Đăng ký → nhóm Customer |
-| GET | `/api/auth/me` | 🔐 đăng nhập | Hồ sơ + nhóm + danh sách quyền |
+| GET | `/api/auth/me` | 🔐 đăng nhập | Hồ sơ + nhóm + quyền |
 | POST | `/api/auth/change-password` | 🔐 đăng nhập | Đổi mật khẩu |
 | GET | `/api/services`, `/:slug`, `/categories`, `/category/:slug` | công khai | Dịch vụ đang hoạt động (kèm giá theo size) |
-| POST | `/api/bookings` | công khai / đăng nhập | Đặt lịch (khách vãng lai hoặc gắn tài khoản) |
+| POST | `/api/bookings` | công khai / đăng nhập | Đặt lịch |
 | GET | `/api/bookings/lookup?number=&phone=` | công khai | Tra cứu lịch bằng mã + SĐT |
 | GET | `/api/bookings/me` | 🔐 `account.view` | Lịch sử đặt lịch của tôi |
 | PATCH | `/api/bookings/:id/cancel` | 🔐 `account.view` | Khách hủy lịch của mình |
 | POST | `/api/contact` | công khai | Gửi liên hệ (lưu DB) |
-| GET | `/api/posts`, `/api/posts/:idOrSlug` | công khai | Bài viết đã đăng |
-| GET | `/api/admin/stats` | 🔐 `admin.access` | Số liệu tổng quan (doanh thu cần `dashboard.revenue`) |
-| GET | `/api/admin/bookings` | 🔐 `bookings.view` | Danh sách lịch (lọc q/status/date, phân trang) |
-| PATCH | `/api/admin/bookings/:id/status` | 🔐 `bookings.manage` | Xác nhận / hoàn thành / hủy (kiểm tra luồng trạng thái) |
+| GET | `/api/posts`, `/:idOrSlug` | công khai | Bài viết đã đăng |
+| **POST** | **`/api/admin/uploads`** | 🔐 `posts.write` | **Upload ảnh** (multipart, ≤5MB, jpg/png/webp/gif/avif) → `{ url: "/uploads/<file>" }` |
+| GET/POST/PATCH/DELETE | `/api/admin/posts[/:id]` | 🔐 `posts.write` | Bài viết (sửa/xóa bài người khác cần `posts.manage_all`); `PATCH {published}` để ẩn/hiện |
 | GET/POST/PATCH/DELETE | `/api/admin/services[/:id]` | 🔐 `services.manage` | Quản lý dịch vụ |
-| GET/POST/PATCH/DELETE | `/api/admin/posts[/:id]` | 🔐 `posts.write` | Bài viết (sửa/xóa bài người khác cần `posts.manage_all`) |
+| GET | `/api/admin/bookings` | 🔐 `bookings.view` | Danh sách lịch (lọc, phân trang) |
+| PATCH | `/api/admin/bookings/:id/status` | 🔐 `bookings.manage` | Xác nhận / hoàn thành / hủy |
 | GET | `/api/admin/customers` | 🔐 `customers.view` | Danh sách khách |
-| GET/POST/PATCH/DELETE | `/api/admin/staff[/:id]` | 🔐 `staff.manage` | Nhân viên (super admin được bảo vệ) |
-| GET | `/api/admin/groups` | 🔐 `groups.manage` | Nhóm + quyền + số thành viên |
-| PUT | `/api/admin/groups/:key/permissions` | 🔐 `groups.manage` | Đặt quyền cho nhóm (trừ Admin) |
+| GET/POST/PATCH/DELETE | `/api/admin/staff[/:id]` | 🔐 `staff.manage` | Quản lý nhân viên |
+| GET | `/api/admin/groups` | 🔐 `groups.manage` | Nhóm + quyền |
+| PUT | `/api/admin/groups/:key/permissions` | 🔐 `groups.manage` | Gán quyền cho nhóm |
+| GET | `/api/admin/stats` | 🔐 `admin.access` | Số liệu tổng quan |
+| GET/PATCH | `/api/settings`, `/api/admin/settings` | công khai / 🔐 `settings.manage` | Cấu hình hệ thống |
 
-Database: xem [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) — schema PostgreSQL `pet-shop`, `schema.sql` đã kèm dữ liệu mặc định (super admin `admin@petshop.vn`).
+## Tin tức (News)
+
+Tính năng bài viết hoạt động end-to-end:
+
+- **Soạn thảo WYSIWYG** bằng TipTap (đậm, nghiêng, heading, danh sách, trích dẫn, **chèn ảnh vào giữa bài**).
+- **Ảnh bìa** upload từ admin → lưu `backend/uploads/` → serve tại `/uploads/<file>` → hiển thị bằng `next/image`.
+- **Ảnh trong nội dung** cũng dùng chung endpoint upload; nội dung lưu HTML và được **sanitize bằng DOMPurify** khi hiển thị.
+- **Toggle trạng thái** (Đã đăng ⇄ Bản nháp) ngay trong bảng quản lý bài viết.
+- Ảnh lưu trong Docker volume `uploads_data` → không mất khi rebuild, và **không đưa lên git** (đã gitignore).
 
 ## Đăng nhập & Phân quyền
 
-Mô hình: **User → Nhóm → Quyền**. Một trang đăng nhập chung `/login` (có đăng ký cho khách). Quản lý nhóm, ma trận quyền và tài khoản tại `/admin/groups`.
+Mô hình **User → Nhóm → Quyền**. Trang đăng nhập chung `/login`; quản lý nhóm/quyền tại `/admin/groups`.
 
-| Nhóm | Dành cho | Quyền mặc định | Tài khoản demo |
-|------|----------|----------------|----------------|
-| **Admin** | Quản trị viên | Toàn quyền (cố định, không chỉnh được) | **admin@petshop.vn / admin123** — Super Admin tạo sẵn, không đổi nhóm/xóa được |
-| **Monitor** | Staff | Vào khu quản trị, xem lịch đặt, viết/sửa/xóa bài của mình | monitor@petshop.vn / monitor123 |
-| **Customer** | Khách hàng | Xem tài khoản và lịch sử đặt lịch của mình | khach@petshop.vn / khach123 |
+| Nhóm | Dành cho | Tài khoản demo |
+|------|----------|----------------|
+| **Admin** | Quản trị viên — toàn quyền (khóa, không chỉnh được) | `admin@petshop.vn` / `admin123` |
+| **Monitor** | Staff — vào admin, xem lịch, viết bài | `monitor@petshop.vn` / `monitor123` |
+| **Customer** | Khách hàng — xem tài khoản & lịch sử đặt | `khach@petshop.vn` / `khach123` |
 
-- Đăng ký trên website luôn vào nhóm **Customer**; staff do admin tạo và gán nhóm Monitor.
-- Backend: Staff có position ADMIN/MANAGER -> `admin`, position khác -> `monitor`; khách -> `customer`.
-- Quyền của Monitor/Customer chỉnh được trong ma trận (chế độ demo lưu localStorage). Chưa có model Group/Permission ở backend.
-> Phân quyền ở FE chỉ để ẩn/hiện giao diện — backend vẫn cần guard (JwtAuthGuard + RolesGuard) cho từng endpoint.
+> ⚠️ Đổi mật khẩu `admin` khi đưa lên production.
 
-> **Chế độ demo (preview không cần backend/DB):** đặt `NEXT_PUBLIC_DEMO_MODE=true` trong `frontend/.env.local` rồi chạy `npm run dev`.
-> Đăng nhập, dịch vụ, đặt lịch (kể cả đơn khách đặt từ `/booking`) hoạt động hoàn toàn trên trình duyệt (localStorage).
-> Khi triển khai thật: bỏ biến này để FE gọi API backend (JWT).
+## Database
 
-## Database Schema
+PostgreSQL schema **`pet-shop`**. `schema.sql` (sinh từ `backend/prisma/schema.prisma`) chứa DDL + dữ liệu mặc định, tự chạy khi DB volume còn trống.
 
-12 models chính trong Prisma:
+- Chi tiết schema & dữ liệu seed: xem [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md).
+- Sửa Prisma schema rồi sinh lại DDL:
+  `npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script`
 
-- **User** — Khách hàng
-- **Store** — Cửa hàng
-- **Staff** — Nhân viên (4 vị trí: Admin, Manager, Groomer, Receptionist)
-- **Pet** — Thú cưng (7 loài: Dog, Cat, Bird, Rabbit, Hamster, Reptile, Other)
-- **ServiceCategory** — Danh mục dịch vụ
-- **Service** — Dịch vụ (spa, grooming, chăm sóc đặc biệt)
-- **ServiceVariant** — Biến thể giá theo size pet
-- **AppointmentSlot** — Khung giờ hẹn
-- **Booking** — Đặt lịch (6 trạng thái: Pending → Confirmed → In Progress → Completed/Cancelled/No Show)
-- **BookingService** — Dịch vụ trong booking
-- **Payment** — Thanh toán (Cash, Bank Transfer, MoMo, ZaloPay)
+## Backup & Restore
 
-Xem chi tiết tại [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) hoặc `backend/prisma/schema.prisma`.
+Database và ảnh upload là **dữ liệu runtime, không nằm trong git** — cần backup riêng.
 
-## Các trang Frontend
+```bash
+# Windows (double-click hoặc chạy từ project root)
+backup-db.cmd
+restore-db.cmd backup_YYYYMMDD_HHMMSS.dump
 
-| Route | Mô tả |
-|-------|-------|
-| `/` | Trang chủ — Hero, dịch vụ, đánh giá, bản đồ |
-| `/services` | Danh sách dịch vụ với filter theo danh mục |
-| `/pricing` | Bảng giá chi tiết theo size pet |
-| `/booking` | Form đặt lịch online |
-| `/news` | Tin tức & kinh nghiệm chăm sóc thú cưng |
-| `/about` | Giới thiệu, đội ngũ, timeline |
-| `/contact` | Form liên hệ + bản đồ |
-| `/login` | Đăng nhập |
-| `/register` | Đăng ký khách hàng |
-| `/account` | Tài khoản khách hàng + lịch sử đặt lịch |
-| `/admin` | Dashboard admin |
-| `/admin/services` | Quản lý dịch vụ |
-| `/admin/bookings` | Quản lý đặt lịch |
-| `/admin/users` | Quản lý khách hàng |
-| `/admin/staff` | Quản lý nhân viên |
+# Tương đương bằng lệnh Docker (custom format)
+docker compose exec -T postgres pg_dump -U petshop -d petshop -Fc > backup.dump
+docker compose exec -T postgres pg_restore -U petshop -d petshop --clean --if-exists < backup.dump
+```
 
-## Tình trạng dự án
-
-**Hoàn thiện: ~40%** — Build thành công, UI hoàn chỉnh, cần bổ sung:
-
-- [ ] Kết nối Frontend ↔ Backend (forms, admin pages)
-- [ ] Authentication (JWT backend, guard API endpoints)
-- [ ] Admin CRUD API + functional UI (modal create/edit)
-- [ ] Lưu contact form vào database
-- [ ] Tích hợp thanh toán (MoMo/ZaloPay)
-- [ ] Email/SMS thông báo
-- [ ] Tests
+> Ảnh upload nằm trong volume `uploads_data` (tương tự `postgres_data`) — muốn sao lưu cả ảnh thì backup thêm volume này.
 
 ## Tài liệu liên quan
 
-- [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) — Chi tiết schema database
-- [DEPLOYMENT.md](DEPLOYMENT.md) — Hướng dẫn deploy VPS (PM2 + Docker)
-- [TECH_STACK.md](TECH_STACK.md) — Kiến trúc công nghệ chi tiết
+- [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) — Chi tiết schema & dữ liệu mẫu
+- [DEPLOYMENT.md](DEPLOYMENT.md) — Hướng dẫn deploy VPS
+- [TECH_STACK.md](TECH_STACK.md) — Kiến trúc & lựa chọn công nghệ
 
 ## Liên hệ
 
 - **Hotline:** 0971 616 634
 - **Zalo:** https://zalo.me/0971616634
-
-
-# pet-shop
-
-## Admin (Full quyền):
-
-Email: admin@petshop.vn
-Password: admin123
-Quyền: Tất cả (CRUD services, bookings, users, staff)
-
-## Monitor (Chỉ xem):
-
-Email: monitor@petshop.vn
-Password: monitor123
