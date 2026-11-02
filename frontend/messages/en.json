@@ -353,10 +353,8 @@
   "newsPage": {
     "title": "News & Tips",
     "subtitle": "Tips from the PetShop team on pet care.",
-    "readMinutes": "min read",
-    "lifestyleTitle": "Lifestyle",
-    "lifestyleSubtitle": "Topics that make life with your pet more complete and peaceful.",
-    "close": "Close"
+    "empty": "No articles yet.",
+    "back": "Back to news"
   },
 
   "news": {

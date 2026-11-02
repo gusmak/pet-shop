@@ -34,6 +34,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:-petshop-jwt-secret-dev-only}
     ports:
       - "8060:8000"
+    volumes:
+      # Ảnh upload (bài viết) — giữ lại khi rebuild container
+      - uploads_data:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -52,3 +55,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:

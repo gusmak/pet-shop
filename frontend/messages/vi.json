@@ -353,10 +353,8 @@
   "newsPage": {
     "title": "Tin tức & Kinh nghiệm",
     "subtitle": "Chia sẻ từ đội ngũ PetShop về chăm sóc thú cưng.",
-    "readMinutes": "phút đọc",
-    "lifestyleTitle": "Phong cách sống",
-    "lifestyleSubtitle": "Những chủ đề giúp cuộc sống cùng thú cưng thêm trọn vẹn và nhẹ nhàng hơn.",
-    "close": "Đóng"
+    "empty": "Chưa có bài viết nào.",
+    "back": "Quay lại tin tức"
   },
 
   "auth": {

@@ -4,9 +4,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: false,
+  images: {
+    // Ảnh self-host từ backend (/uploads). Ảnh hiển thị với `unoptimized` (component)
+    // để tránh lỗi khi frontend-container gọi tới backend qua localhost khi dev bằng Docker.
+    remotePatterns: [
+      { protocol: 'http', hostname: '**' },
+      { protocol: 'https', hostname: '**' },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {

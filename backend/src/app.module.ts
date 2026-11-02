@@ -8,6 +8,7 @@ import { ServicesModule } from './services/services.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { ContactModule } from './contact/contact.module';
 import { PostsModule } from './posts/posts.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { StaffModule } from './staff/staff.module';
 import { CustomersModule } from './customers/customers.module';
 import { GroupsModule } from './groups/groups.module';
@@ -23,6 +24,7 @@ import { SettingsModule } from './settings/settings.module';
     BookingsModule,
     ContactModule,
     PostsModule,
+    UploadsModule,
     StaffModule,
     CustomersModule,
     GroupsModule,

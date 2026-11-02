@@ -2,4 +2,8 @@
 /node_modules 
 
 # enviroment
-.env 
+.env
+
+# uploaded files (local dev)
+/uploads 
+./uploads

@@ -1,4 +1,11 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+/** Trả về URL đầy đủ cho tài nguyên từ backend (ảnh bìa...): `/uploads/x` → `API_BASE/uploads/x`. */
+export function assetUrl(path: string | null | undefined): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${API_BASE}${path}`;
+}
 
 interface ApiResponse<T = unknown> {
   data?: T;
@@ -49,6 +56,27 @@ async function request<T>(
   }
 }
 
+async function upload<T>(endpoint: string, formData: FormData): Promise<ApiResponse<T>> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const headers: Record<string, string> = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  try {
+    // Không tự set Content-Type để trình duyệt tự thêm boundary cho multipart/form-data.
+    const res = await fetch(`${API_BASE}${endpoint}`, { method: 'POST', headers, body: formData });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      return {
+        error: Array.isArray(data?.message) ? data.message.join('; ') : data?.message || `Lỗi ${res.status}`,
+        status: res.status,
+      };
+    }
+    return { data, status: res.status };
+  } catch {
+    return { error: 'Không thể kết nối đến server', status: 0 };
+  }
+}
+
 export const api = {
   get: <T>(endpoint: string) => request<T>(endpoint),
   post: <T>(endpoint: string, body: unknown) =>
@@ -58,4 +86,5 @@ export const api = {
   patch: <T>(endpoint: string, body: unknown) =>
     request<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
   delete: <T>(endpoint: string) => request<T>(endpoint, { method: 'DELETE' }),
+  upload: <T>(endpoint: string, formData: FormData) => upload<T>(endpoint, formData),
 };

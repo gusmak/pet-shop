@@ -24,6 +24,11 @@ export class CreatePostDto {
   content: string;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  coverImage?: string;
+
+  @IsOptional()
   @IsBoolean()
   published?: boolean;
 }
@@ -50,6 +55,11 @@ export class UpdatePostDto {
   content?: string;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  coverImage?: string;
+
+  @IsOptional()
   @IsBoolean()
   published?: boolean;
 }
@@ -61,6 +71,7 @@ const toDto = (p: Post) => ({
   title: p.title,
   excerpt: p.excerpt,
   content: p.content,
+  coverImage: p.coverImage,
   authorId: p.authorId,
   authorName: p.authorName,
   createdAt: p.createdAt.toISOString().slice(0, 10),
@@ -110,6 +121,7 @@ export class PostsService {
         title: dto.title,
         excerpt: dto.excerpt,
         content: dto.content,
+        coverImage: dto.coverImage,
         authorId: author.id,
         authorName: author.fullName,
         isPublished: published,
