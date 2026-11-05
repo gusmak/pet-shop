@@ -37,6 +37,8 @@ export class SettingsService {
       openTime: s.openTime,
       closeTime: s.closeTime,
       slotCapacity: s.slotCapacity,
+      latitude: s.latitude,
+      longitude: s.longitude,
     };
   }
 }

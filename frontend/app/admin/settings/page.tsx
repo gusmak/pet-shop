@@ -13,6 +13,8 @@ interface StoreSettings {
   openTime: string;
   closeTime: string;
   slotCapacity: number;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 interface SettingsForm {
@@ -24,6 +26,8 @@ interface SettingsForm {
   openTime: string;
   closeTime: string;
   slotCapacity: number;
+  latitude: string;
+  longitude: string;
 }
 
 const inputCls =
@@ -58,6 +62,8 @@ function ApiSettings() {
     openTime: '08:00',
     closeTime: '20:00',
     slotCapacity: 3,
+    latitude: '',
+    longitude: '',
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,6 +84,8 @@ function ApiSettings() {
           openTime: res.data.openTime,
           closeTime: res.data.closeTime,
           slotCapacity: res.data.slotCapacity,
+          latitude: res.data.latitude?.toString() ?? '',
+          longitude: res.data.longitude?.toString() ?? '',
         });
       } else {
         setMessage({ ok: false, text: res.error || 'Không tải được cấu hình' });
@@ -106,6 +114,8 @@ function ApiSettings() {
       openTime: form.openTime,
       closeTime: form.closeTime,
       slotCapacity: Number(form.slotCapacity),
+      latitude: form.latitude.trim() ? Number(form.latitude) : null,
+      longitude: form.longitude.trim() ? Number(form.longitude) : null,
     });
     setSaving(false);
 
@@ -122,6 +132,8 @@ function ApiSettings() {
       openTime: res.data.openTime,
       closeTime: res.data.closeTime,
       slotCapacity: res.data.slotCapacity,
+      latitude: res.data.latitude?.toString() ?? '',
+      longitude: res.data.longitude?.toString() ?? '',
     });
     setMessage({ ok: true, text: 'Đã lưu cấu hình' });
   };
@@ -169,7 +181,16 @@ function ApiSettings() {
           <div className="sm:col-span-2">
             <label className="block text-sm font-semibold text-gray-700 mb-1">Zalo link</label>
             <input value={form.zaloLink} onChange={(e) => set('zaloLink', e.target.value)} className={inputCls} placeholder="https://zalo.me/0971616634" />
-            <p className="text-xs text-gray-400 mt-1">Đường link Zalo để khách bấm liên hệ.</p>
+            <p className="text-xs text-gray-400 mt-1">Đường link Zalo để khách bấm liên hệ. Để trống sẽ dùng zalo.me/&lt;số hotline&gt;.</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Vĩ độ (bản đồ)</label>
+            <input type="number" step="any" value={form.latitude} onChange={(e) => set('latitude', e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Kinh độ (bản đồ)</label>
+            <input type="number" step="any" value={form.longitude} onChange={(e) => set('longitude', e.target.value)} className={inputCls} />
           </div>
         </div>
 

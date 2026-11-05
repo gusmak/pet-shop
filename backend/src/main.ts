@@ -7,6 +7,11 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Sau reverse proxy (nginx, Cloudflare...) phải bật để rate-limit thấy IP thật của khách thay vì IP của proxy.
+  // TRUST_PROXY = số tầng proxy (vd 1) hoặc 'true'. Không đặt = không tin header X-Forwarded-For.
+  const trustProxy = process.env.TRUST_PROXY;
+  if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy === 'true');
+
   // Serve ảnh upload (backend/uploads) tại /uploads/<file>
   app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads/' });
 
@@ -30,4 +35,4 @@ async function bootstrap() {
   console.log(`🚀 Backend running on: http://localhost:${port}`);
 
 }
-bootstrap();
+void bootstrap();

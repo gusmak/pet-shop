@@ -11,3 +11,8 @@ export function getJwtSecret(config: ConfigService): string {
   }
   return DEV_SECRET;
 }
+
+// Thời hạn token (vd 7d, 12h). Đọc từ JWT_EXPIRES_IN, mặc định 7 ngày.
+export function jwtExpiresIn(config: ConfigService): string {
+  return config.get<string>('JWT_EXPIRES_IN') || '7d';
+}

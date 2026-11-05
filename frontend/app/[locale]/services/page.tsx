@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Clock, Check, ArrowRight } from "lucide-react";
 import { api } from "@/lib/api";
 import { DEMO_MODE } from "@/lib/demo";
+import { StorePhoneLink, StoreText } from "@/components/StoreContact";
 
 type Size = "toy" | "small" | "medium" | "large";
 
@@ -91,6 +92,7 @@ export default function ServicesPage() {
   const t = useTranslations("servicesPage");
   const cat = useTranslations("catalog");
   const time = useTranslations("common.time");
+  const common = useTranslations("common");
 
   const allLabel = t("all");
 
@@ -111,8 +113,9 @@ export default function ServicesPage() {
   };
 
   const [activeCategory, setActiveCategory] = useState("all");
-  const [services, setServices] = useState<UIService[]>(buildDemo().services);
-  const [categories, setCategories] = useState<UICategory[]>(buildDemo().categories);
+  const [services, setServices] = useState<UIService[]>(DEMO_MODE ? buildDemo().services : []);
+  const [categories, setCategories] = useState<UICategory[]>(DEMO_MODE ? buildDemo().categories : [{ id: "all", name: allLabel }]);
+  const [catalogState, setCatalogState] = useState<"loading" | "ok" | "error">(DEMO_MODE ? "ok" : "loading");
 
   useEffect(() => {
     if (DEMO_MODE) return;
@@ -123,6 +126,7 @@ export default function ServicesPage() {
         api.get<{ slug: string; name: string }[]>("/api/services/categories"),
       ]);
       if (cancelled) return;
+      setCatalogState(svc.data ? "ok" : "error");
       if (svc.data) setServices(svc.data.map(toUIService));
       if (catList.data?.length) {
         setCategories([{ id: "all", name: allLabel }, ...catList.data.map((c) => ({ id: c.slug, name: c.name }))]);
@@ -174,6 +178,9 @@ export default function ServicesPage() {
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {catalogState !== "ok" && (
+            <p className="col-span-full py-12 text-center text-gray-500">{catalogState === "loading" ? common("dataLoading") : common("dataError")}</p>
+          )}
           {filteredServices.map((service, index) => (
             <div
               key={service.id}
@@ -247,12 +254,12 @@ export default function ServicesPage() {
             >
               {t("contactNow")}
             </Link>
-            <a
-              href="tel:0971616634"
+            <StorePhoneLink
+              
               className="bg-primary-700 hover:bg-primary-800 text-white px-8 py-4 rounded-full font-semibold transition-all flex items-center justify-center gap-2"
             >
-              {t("callNow")}
-            </a>
+              <StoreText template={t.raw("callNow") as string} />
+            </StorePhoneLink>
           </div>
         </div>
       </div>

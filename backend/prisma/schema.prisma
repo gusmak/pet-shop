@@ -64,6 +64,8 @@ model User {
   email         String    @unique
   phone         String?   @unique
   passwordHash  String    @map("password_hash")
+  // Mốc đổi mật khẩu gần nhất: token cấp trước mốc này (pwv khác) bị từ chối => buộc đăng nhập lại.
+  passwordChangedAt DateTime? @map("password_changed_at")
   fullName      String    @map("full_name")
   avatar        String?
   address       String?
@@ -90,6 +92,7 @@ model Staff {
   email          String        @unique
   phone          String        @unique
   passwordHash   String        @map("password_hash")
+  passwordChangedAt DateTime?  @map("password_changed_at")
   fullName       String        @map("full_name")
   avatar         String?
   employeeCode   String        @unique @map("employee_code")
@@ -396,4 +399,18 @@ model ContactMessage {
 
   @@index([isRead, createdAt])
   @@map("contact_messages")
+}
+
+// Token đặt lại mật khẩu (quên mật khẩu). Chỉ lưu hash SHA-256 của token gửi qua email; dùng một lần, có hạn.
+model PasswordResetToken {
+  id          String    @id @default(uuid())
+  tokenHash   String    @unique @map("token_hash")
+  accountType String    @map("account_type") // 'staff' | 'customer'
+  accountId   String    @map("account_id")
+  expiresAt   DateTime  @map("expires_at")
+  usedAt      DateTime? @map("used_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([accountType, accountId])
+  @@map("password_reset_tokens")
 }

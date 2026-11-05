@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { Eye, EyeOff, Lock } from "lucide-react";
@@ -19,8 +20,9 @@ const withoutPassword = ({ password, ...user }: DemoAccount): DemoUser => {
   return user;
 };
 
-export default function LoginPage() {
+function LoginForm() {
   const t = useTranslations("auth");
+  const passwordChanged = useSearchParams().get("pw") === "changed";
   const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -78,6 +80,12 @@ export default function LoginPage() {
           <h1 className="text-4xl font-bold text-gray-900">{t("login")}</h1>
         </div>
 
+        {passwordChanged && (
+          <div role="status" className="mb-5 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-sm">
+            {t("passwordChangedLogin")}
+          </div>
+        )}
+
         <form onSubmit={submit} className="space-y-5">
           <div>
             <label htmlFor="identifier" className="sr-only">
@@ -119,7 +127,7 @@ export default function LoginPage() {
               </button>
             </div>
             <div className="text-right mt-2">
-              <Link href="/contact" className="text-sm text-blue-600 hover:text-blue-700">
+              <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
                 {t("forgotPassword")}
               </Link>
             </div>
@@ -149,10 +157,18 @@ export default function LoginPage() {
 
         {DEMO_MODE && (
           <p className="text-center text-xs text-gray-400 mt-8">
-            Demo: admin@petshop.vn / admin123 · monitor@petshop.vn / monitor123 · khach@petshop.vn / khach123
+            Demo: admin@petshop.vn / admin123 · monitor@petshop.vn / monitor123 · guest@petshop.vn / guest123
           </p>
         )}
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

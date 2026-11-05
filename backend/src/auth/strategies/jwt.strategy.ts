@@ -9,6 +9,8 @@ export interface JwtPayload {
   sub: string;
   email: string;
   type: 'admin' | 'customer';
+  // passwordChangedAt (ms) của tài khoản lúc cấp token; 0 nếu chưa từng đổi. Lệch => mật khẩu đã đổi sau đó.
+  pwv?: number;
 }
 
 // Gắn vào request.user. Quyền luôn đọc từ DB mỗi request nên đổi nhóm/quyền có hiệu lực ngay.
@@ -44,6 +46,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (!account || !account.isActive) {
       throw new UnauthorizedException('Tài khoản không tồn tại hoặc đã bị khóa');
+    }
+    // Đổi/đặt lại mật khẩu => mọi token cấp trước đó mất hiệu lực, buộc đăng nhập lại.
+    if ((payload.pwv ?? 0) !== (account.passwordChangedAt?.getTime() ?? 0)) {
+      throw new UnauthorizedException('Phiên đăng nhập đã hết hiệu lực, vui lòng đăng nhập lại');
     }
 
     return {

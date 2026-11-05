@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import { StoreAddress, StoreEmail, StoreEmailLink, StorePhone, StorePhoneLink, StoreZaloLink } from "@/components/StoreContact";
 
 export default function Footer() {
   const t = useTranslations("common");
@@ -31,15 +32,13 @@ export default function Footer() {
               >
                 FB
               </a>
-              <a
-                href="https://zalo.me/0971616634"
-                target="_blank"
-                rel="noopener noreferrer"
+              <StoreZaloLink
+                
                 className="w-10 h-10 bg-gray-800 hover:bg-blue-500 rounded-full flex items-center justify-center transition-colors"
                 aria-label="Zalo"
               >
                 <MessageCircle className="w-5 h-5" />
-              </a>
+              </StoreZaloLink>
             </div>
           </div>
 
@@ -76,19 +75,19 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
-                <span>7 Chùa Bộc, Đống Đa, Hà Nội</span>
+                <span><StoreAddress /></span>
               </li>
               <li>
-                <a href="tel:0971616634" className="flex items-center gap-2 hover:text-primary-500">
+                <StorePhoneLink  className="flex items-center gap-2 hover:text-primary-500">
                   <Phone className="w-5 h-5 text-primary-500" />
-                  <span>0971 616 634</span>
-                </a>
+                  <span><StorePhone /></span>
+                </StorePhoneLink>
               </li>
               <li>
-                <a href="mailto:info@petshop.vn" className="flex items-center gap-2 hover:text-primary-500">
+                <StoreEmailLink  className="flex items-center gap-2 hover:text-primary-500">
                   <Mail className="w-5 h-5 text-primary-500" />
-                  <span>info@petshop.vn</span>
-                </a>
+                  <span><StoreEmail /></span>
+                </StoreEmailLink>
               </li>
             </ul>
           </div>

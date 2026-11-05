@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-petshop}
       POSTGRES_USER: ${POSTGRES_USER:-petshop}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-petshop_dev_password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Cần đặt POSTGRES_PASSWORD trong file .env}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # Chạy schema + seed tự động ở lần init đầu tiên (khi volume còn trống)
@@ -26,12 +26,30 @@ services:
     container_name: petshop-backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-petshop}:${POSTGRES_PASSWORD:-petshop_dev_password}@postgres:5432/${POSTGRES_DB:-petshop}?schema=pet-shop
+      DATABASE_URL: postgresql://${POSTGRES_USER:-petshop}:${POSTGRES_PASSWORD:?Cần đặt POSTGRES_PASSWORD trong file .env}@postgres:5432/${POSTGRES_DB:-petshop}?schema=pet-shop
       PORT: "8000"
       NODE_ENV: production
       # Origin mà trình duyệt mở frontend (CORS)
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3006}
-      JWT_SECRET: ${JWT_SECRET:-petshop-jwt-secret-dev-only}
+      JWT_SECRET: ${JWT_SECRET:?Cần đặt JWT_SECRET trong file .env - tạo bằng openssl rand -hex 32}
+      # Đặt 1 khi chạy sau reverse proxy (nginx...) để rate-limit lấy đúng IP khách
+      TRUST_PROXY: ${TRUST_PROXY:-}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      # Mật khẩu tài khoản mặc định — backend tự tạo khi khởi động nếu chưa có.
+      # ADMIN_PASSWORD bắt buộc; monitor/guest để trống = không tạo tài khoản đó.
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      MONITOR_EMAIL: ${MONITOR_EMAIL:-}
+      GUEST_EMAIL: ${GUEST_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Cần đặt ADMIN_PASSWORD trong file .env}
+      MONITOR_PASSWORD: ${MONITOR_PASSWORD:-}
+      GUEST_PASSWORD: ${GUEST_PASSWORD:-}
+      # Email (quên mật khẩu). Bỏ trống SMTP_HOST = không gửi được email.
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-}
     ports:
       - "8060:8000"
     volumes:

@@ -10,13 +10,14 @@ export class StatsService {
   constructor(private prisma: PrismaService) {}
 
   async dashboard(user: AuthUser) {
-    const [grouped, recent] = await Promise.all([
+    const [grouped, recent, unreadMessages] = await Promise.all([
       this.prisma.booking.groupBy({ by: ['status'], _count: { _all: true }, _sum: { total: true } }),
       this.prisma.booking.findMany({
         orderBy: { createdAt: 'desc' },
         take: 5,
         include: { services: { include: { service: true } } },
       }),
+      this.prisma.contactMessage.count({ where: { isRead: false } }),
     ]);
 
     const counts = Object.fromEntries(grouped.map((g) => [g.status.toLowerCase(), g._count._all]));
@@ -24,6 +25,7 @@ export class StatsService {
       totalBookings: grouped.reduce((n, g) => n + g._count._all, 0),
       pending: counts.pending ?? 0,
       counts,
+      unreadMessages,
       recent: recent.map(toBookingDto),
     };
 

@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Check, Clock, Info, Sparkles, ArrowRight, Phone, MessageCircle } from "lucide-react";
 import { api } from "@/lib/api";
 import { DEMO_MODE } from "@/lib/demo";
+import { StorePhone, StorePhoneLink, StoreZaloLink } from "@/components/StoreContact";
 
 type Size = "toy" | "small" | "medium" | "large";
 
@@ -91,6 +92,7 @@ export default function PricingPage() {
   const locale = useLocale();
   const t = useTranslations("pricingPage");
   const cat = useTranslations("catalog");
+  const common = useTranslations("common");
   const time = useTranslations("common.time");
 
   const buildDemo = (): { services: Service[]; categories: Category[] } => {
@@ -110,8 +112,9 @@ export default function PricingPage() {
   };
 
   const [active, setActive] = useState<string>("all");
-  const [services, setServices] = useState<Service[]>(buildDemo().services);
-  const [categories, setCategories] = useState<Category[]>(buildDemo().categories);
+  const [services, setServices] = useState<Service[]>(DEMO_MODE ? buildDemo().services : []);
+  const [categories, setCategories] = useState<Category[]>(DEMO_MODE ? buildDemo().categories : [{ id: "all", label: t("all"), emoji: "🐾" }]);
+  const [catalogState, setCatalogState] = useState<"loading" | "ok" | "error">(DEMO_MODE ? "ok" : "loading");
 
   useEffect(() => {
     if (DEMO_MODE) return;
@@ -122,6 +125,7 @@ export default function PricingPage() {
         api.get<{ slug: string; name: string }[]>("/api/services/categories"),
       ]);
       if (cancelled) return;
+      setCatalogState(svc.data ? "ok" : "error");
       if (svc.data) setServices(svc.data.map(toService));
       if (catList.data?.length) {
         setCategories([
@@ -208,6 +212,9 @@ export default function PricingPage() {
 
         {/* ── Thẻ dịch vụ ── */}
         <div className="mt-10 grid gap-8 md:grid-cols-2">
+          {catalogState !== "ok" && (
+            <p className="col-span-full py-12 text-center text-gray-500">{catalogState === "loading" ? common("dataLoading") : common("dataError")}</p>
+          )}
           {filtered.map((s) => {
             const fromPrice = Math.min(...Object.values(s.prices));
             return (
@@ -314,22 +321,20 @@ export default function PricingPage() {
           <h2 className="text-2xl font-extrabold sm:text-3xl">{t("ctaTitle")}</h2>
           <p className="mt-3 text-gray-400">{t("ctaDescription")}</p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <a
-              href="tel:0971616634"
+            <StorePhoneLink
+              
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-primary-700"
             >
               <Phone className="h-5 w-5" />
-              0971 616 634
-            </a>
-            <a
-              href="https://zalo.me/0971616634"
-              target="_blank"
-              rel="noopener noreferrer"
+              <StorePhone />
+            </StorePhoneLink>
+            <StoreZaloLink
+              
               className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-blue-700"
             >
               <MessageCircle className="h-5 w-5" />
               {t("chatZalo")}
-            </a>
+            </StoreZaloLink>
           </div>
         </div>
       </div>

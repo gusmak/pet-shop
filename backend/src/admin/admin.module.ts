@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AdminModule as AdminJSModule } from '@adminjs/nestjs';
 import { Database, Resource } from '@adminjs/prisma';
 import { PrismaClient } from '@prisma/client';
@@ -120,24 +121,29 @@ const adminOptions = {
 @Module({
   imports: [
     PrismaModule,
-    AdminJSModule.createAdmin({
-      adminJsOptions: {
-        rootPath: '/admin',
-        resources: adminOptions.resources,
-        branding: adminOptions.branding,
-        locale: adminOptions.locale,
-      },
-      auth: {
-        authenticate: async (email: string, password: string) => {
-          // TODO: Implement proper authentication
-          // For now, use hardcoded credentials
-          if (email === 'admin@petshop.vn' && password === 'admin123') {
-            return { email };
-          }
-          return null;
-        },
-        cookieName: 'adminjs',
-        cookiePassword: 'petshop-admin-secret-key-change-in-production',
+    AdminJSModule.createAdminAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        // Thông tin đăng nhập lấy từ .env — không có giá trị mặc định, thiếu là không khởi động.
+        const email = config.get<string>('ADMINJS_EMAIL');
+        const password = config.get<string>('ADMINJS_PASSWORD');
+        const cookiePassword = config.get<string>('ADMINJS_COOKIE_SECRET');
+        if (!email || !password || !cookiePassword) {
+          throw new Error('Thiếu ADMINJS_EMAIL / ADMINJS_PASSWORD / ADMINJS_COOKIE_SECRET trong .env');
+        }
+        return {
+          adminJsOptions: {
+            rootPath: '/admin',
+            resources: adminOptions.resources,
+            branding: adminOptions.branding,
+            locale: adminOptions.locale,
+          },
+          auth: {
+            authenticate: async (e: string, p: string) => (e === email && p === password ? { email: e } : null),
+            cookieName: 'adminjs',
+            cookiePassword,
+          },
+        };
       },
     }),
   ],

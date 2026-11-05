@@ -1,9 +1,10 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, BookingStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { MailService } from '../mail/mail.service';
 import { addMinutes, vnNow } from '../common/normalize';
 import type { AuthUser } from '../auth/strategies/jwt.strategy';
-import { CreateBookingDto, ListBookingsQuery, UpdateBookingStatusDto } from './dto/booking.dto';
+import { CreateBookingDto, ListBookingsQuery, RebookDto, UpdateBookingStatusDto } from './dto/booking.dto';
 
 const include = { services: { include: { service: true } } } satisfies Prisma.BookingInclude;
 type BookingRow = Prisma.BookingGetPayload<{ include: typeof include }>;
@@ -42,7 +43,28 @@ export const toBookingDto = (b: BookingRow) => ({
 
 @Injectable()
 export class BookingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mail: MailService,
+  ) {}
+
+  // Gửi email cho khách (nếu có email) — chạy nền, lỗi chỉ ghi log, không ảnh hưởng nghiệp vụ.
+  private notify(b: BookingRow, store: { name: string; phone: string } | null) {
+    if (!b.customerEmail || !store) return;
+    void this.mail
+      .sendBookingNotice(b.customerEmail, {
+        name: b.customerName,
+        code: b.bookingNumber,
+        status: b.status.toLowerCase(),
+        date: b.date.toISOString().slice(0, 10),
+        time: b.startTime,
+        services: b.services.map((x) => x.service.name).join(', '),
+        total: b.total,
+        storeName: store.name,
+        storePhone: store.phone,
+      })
+      .catch((e) => console.error('Gửi email lịch hẹn thất bại:', e instanceof Error ? e.message : e));
+  }
 
   // Khách vãng lai hoặc khách đã đăng nhập (auth.type === 'customer') đều đặt được.
   async create(dto: CreateBookingDto, auth: AuthUser | null) {
@@ -135,6 +157,7 @@ export class BookingsService {
       });
     });
 
+    this.notify(booking, store);
     return toBookingDto(booking);
   }
 
@@ -153,6 +176,27 @@ export class BookingsService {
     return rows.map(toBookingDto);
   }
 
+  // Đặt lại lịch cũ của chính mình: dùng lại dịch vụ/thú cưng/liên hệ, giá và sức chứa tính theo hiện tại.
+  async rebookMine(auth: AuthUser, id: string, dto: RebookDto) {
+    const old = await this.prisma.booking.findUnique({ where: { id }, include });
+    if (!old || old.userId !== auth.sub) throw new NotFoundException('Không tìm thấy lịch hẹn');
+    return this.create(
+      Object.assign(new CreateBookingDto(), {
+        customerName: old.customerName,
+        customerPhone: old.customerPhone,
+        customerEmail: old.customerEmail ?? undefined,
+        petName: old.petName,
+        petSpecies: old.petSpecies,
+        petSize: old.petSize,
+        services: old.services.map((s) => s.serviceId),
+        date: dto.date,
+        time: dto.time,
+        notes: old.customerNotes ?? undefined,
+      }),
+      auth,
+    );
+  }
+
   async cancelMine(userId: string, id: string) {
     const booking = await this.prisma.booking.findUnique({ where: { id } });
     // Trả 404 cho cả "không tồn tại" lẫn "của người khác" để không lộ id.
@@ -165,6 +209,7 @@ export class BookingsService {
       data: { status: 'CANCELLED', cancelledAt: new Date(), cancelReason: 'Khách hủy' },
       include,
     });
+    this.notify(updated, await this.prisma.store.findUnique({ where: { id: updated.storeId } }));
     return toBookingDto(updated);
   }
 
@@ -223,6 +268,7 @@ export class BookingsService {
       },
       include,
     });
+    this.notify(updated, await this.prisma.store.findUnique({ where: { id: updated.storeId } }));
     return toBookingDto(updated);
   }
 }

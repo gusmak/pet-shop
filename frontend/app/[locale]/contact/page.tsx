@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { DEMO_MODE } from "@/lib/demo";
 import { api } from "@/lib/api";
 import { Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
-import GoogleMap from "@/components/GoogleMap";
+import { StoreEmail, StoreEmailLink, StoreMap, StorePhone, StorePhoneLink, StoreText, StoreZaloLink } from "@/components/StoreContact";
 
 export default function ContactPage() {
   const t = useTranslations("contactPage");
@@ -148,9 +148,9 @@ export default function ContactPage() {
                   <Phone className="w-6 h-6 text-primary-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{t("hotline")}</h3>
-                <a href="tel:0971616634" className="text-primary-600 hover:text-primary-700 font-semibold">
-                  0971 616 634
-                </a>
+                <StorePhoneLink  className="text-primary-600 hover:text-primary-700 font-semibold">
+                  <StorePhone />
+                </StorePhoneLink>
                 <p className="text-sm text-gray-600 mt-1">{t("hotlineNote")}</p>
               </div>
 
@@ -159,14 +159,12 @@ export default function ContactPage() {
                   <Send className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{t("zalo")}</h3>
-                <a
-                  href="https://zalo.me/0971616634"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <StoreZaloLink
+                  
                   className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
                   {t("zaloAction")}
-                </a>
+                </StoreZaloLink>
                 <p className="text-sm text-gray-600 mt-1">{t("zaloNote")}</p>
               </div>
 
@@ -175,9 +173,9 @@ export default function ContactPage() {
                   <Mail className="w-6 h-6 text-green-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{t("emailLabel")}</h3>
-                <a href="mailto:info@petshop.vn" className="text-green-600 hover:text-green-700 font-semibold">
-                  info@petshop.vn
-                </a>
+                <StoreEmailLink  className="text-green-600 hover:text-green-700 font-semibold">
+                  <StoreEmail />
+                </StoreEmailLink>
                 <p className="text-sm text-gray-600 mt-1">{t("emailNote")}</p>
               </div>
 
@@ -186,7 +184,7 @@ export default function ContactPage() {
                   <Clock className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">{t("hours")}</h3>
-                <p className="text-gray-900 font-semibold">8:00 - 20:00</p>
+                <p className="text-gray-900 font-semibold"><StoreText template="{hours}" /></p>
                 <p className="text-sm text-gray-600 mt-1">{t("hoursNote")}</p>
               </div>
             </div>
@@ -194,7 +192,7 @@ export default function ContactPage() {
             {/* Map */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t("mapTitle")}</h2>
-              <GoogleMap latitude={21.005} longitude={105.825} address="7 Chùa Bộc, Đống Đa, Hà Nội" height="400px" />
+              <StoreMap height="400px" />
             </div>
           </div>
         </div>

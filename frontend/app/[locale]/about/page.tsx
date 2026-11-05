@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Heart, Award, Users, Target, Star, Clock, Phone } from "lucide-react";
+import { StorePhone, StorePhoneLink } from "@/components/StoreContact";
 
 type Stat = { number: string; label: string };
 type Value = { title: string; description: string };
@@ -179,13 +180,13 @@ export default function AboutPage() {
             >
               {t("cta.bookNow")}
             </Link>
-            <a
-              href="tel:0971616634"
+            <StorePhoneLink
+              
               className="bg-primary-700 hover:bg-primary-800 text-white px-8 py-4 rounded-full font-semibold transition-all flex items-center justify-center gap-2"
             >
               <Phone className="w-5 h-5" />
-              0971 616 634
-            </a>
+              <StorePhone />
+            </StorePhoneLink>
           </div>
         </section>
       </div>

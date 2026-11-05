@@ -45,6 +45,7 @@ interface ApiStats {
   counts: Record<string, number>;
   revenue?: number;
   activeServices?: number;
+  unreadMessages?: number;
   recent: ApiBooking[];
 }
 
@@ -157,6 +158,7 @@ function ApiDashboard() {
   const stats = [
     { label: 'Tổng đặt lịch', value: String(data?.totalBookings ?? 0), icon: '📅' },
     { label: 'Chờ xác nhận', value: String(data?.pending ?? 0), icon: '⏳' },
+    { label: 'Tin liên hệ chưa đọc', value: String(data?.unreadMessages ?? 0), icon: '✉️' },
     ...(can('dashboard.revenue')
       ? [
           { label: 'Doanh thu (đã hoàn thành)', value: formatVnd(data?.revenue ?? 0), icon: '💰' },

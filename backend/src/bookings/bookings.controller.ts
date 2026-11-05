@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { BookingsService } from './bookings.service';
-import { CreateBookingDto, ListBookingsQuery, LookupBookingDto, UpdateBookingStatusDto } from './dto/booking.dto';
+import { CreateBookingDto, ListBookingsQuery, LookupBookingDto, RebookDto, UpdateBookingStatusDto } from './dto/booking.dto';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { OptionalJwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -12,6 +13,7 @@ export class BookingsController {
 
   // Công khai: khách vãng lai hoặc đã đăng nhập. Đăng nhập thì lịch gắn vào tài khoản.
   @UseGuards(OptionalJwtAuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Post()
   create(@Body() dto: CreateBookingDto, @CurrentUser() user: AuthUser | null) {
     return this.bookings.create(dto, user);
@@ -27,6 +29,13 @@ export class BookingsController {
   @Get('me')
   mine(@CurrentUser('sub') userId: string) {
     return this.bookings.listMine(userId);
+  }
+
+  @Auth('account.view')
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Post(':id/rebook')
+  rebook(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: RebookDto) {
+    return this.bookings.rebookMine(user, id, dto);
   }
 
   @Auth('account.view')

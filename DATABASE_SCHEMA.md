@@ -24,8 +24,7 @@ Tạo lại phần DDL trong `schema.sql` sau khi sửa Prisma schema:
 |----|----------|
 | 3 nhóm | `admin` (khóa, toàn quyền), `monitor`, `customer` |
 | 12 quyền | xem `backend/src/auth/permissions.ts` |
-| **Super Admin** | `admin@petshop.vn` / `admin123` — `is_super_admin = true`. **Đổi mật khẩu khi lên production** (`SUPER_ADMIN_PASSWORD` khi seed bằng Prisma, hoặc `POST /api/auth/change-password`) |
-| Tài khoản mẫu (dev) | `monitor@petshop.vn` / `monitor123` (nhóm monitor), `khach@petshop.vn` / `khach123` (nhóm customer) |
+| Tài khoản mặc định | `admin@petshop.vn` (super admin, `is_super_admin = true`), `monitor@petshop.vn`, `guest@petshop.vn` — **không nằm trong `schema.sql`**: backend tự tạo khi khởi động từ `ADMIN_PASSWORD` / `MONITOR_PASSWORD` / `GUEST_PASSWORD` trong `.env` (không ghi đè tài khoản đã có) |
 | Cửa hàng, 3 danh mục, 6 dịch vụ + 24 mức giá theo size, 2 bài viết | khớp nội dung website |
 
 ## Mô hình phân quyền

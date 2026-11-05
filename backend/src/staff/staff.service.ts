@@ -162,7 +162,7 @@ export class StaffService {
       data: {
         ...rest,
         ...(group && { groupId: (await this.prisma.group.findUniqueOrThrow({ where: { key: group } })).id }),
-        ...(password && { passwordHash: await bcrypt.hash(password, 10) }),
+        ...(password && { passwordHash: await bcrypt.hash(password, 10), passwordChangedAt: new Date() }),
       },
       include: this.include,
     });

@@ -24,7 +24,7 @@ export type DemoAccount = DemoUser & { password: string };
 export const DEMO_ACCOUNTS: DemoAccount[] = [
   { id: "demo-admin", email: "admin@petshop.vn", password: "admin123", name: "Super Admin", role: "admin", isSuper: true, position: "ADMIN", storeId: "store-1", storeName: "Cửa hàng chính" },
   { id: "demo-staff", email: "monitor@petshop.vn", password: "monitor123", name: "Nhân viên Lễ tân", role: "monitor", position: "RECEPTIONIST", storeId: "store-1", storeName: "Cửa hàng chính" },
-  { id: "demo-customer", email: "khach@petshop.vn", password: "khach123", name: "Nguyễn Văn A", role: "customer", phone: "0912 345 678" },
+  { id: "demo-customer", email: "guest@petshop.vn", password: "guest123", name: "Nguyễn Văn A", role: "customer", phone: "0912 345 678" },
 ];
 
 const ACCOUNTS_KEY = "demo.accounts";

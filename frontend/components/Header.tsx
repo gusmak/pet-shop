@@ -7,6 +7,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { Menu, X, Phone, MessageCircle, User, LogOut } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { StorePhone, StorePhoneLink, StoreText, StoreZaloLink } from "@/components/StoreContact";
 
 // Trang chủ khớp đúng "/", các trang con khớp tiền tố (vd /services).
 const isActiveLink = (href: string, pathname: string) =>
@@ -61,17 +62,17 @@ export default function Header() {
       <div className="bg-primary-600 text-white py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between text-sm">
           <div className="hidden sm:flex items-center gap-4">
-            <a href="tel:0971616634" className="flex items-center gap-1 hover:text-primary-100">
+            <StorePhoneLink  className="flex items-center gap-1 hover:text-primary-100">
               <Phone className="w-4 h-4" />
-              <span className="hidden sm:inline">0971 616 634</span>
-            </a>
-            <a href="https://zalo.me/0971616634" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary-100">
+              <span className="hidden sm:inline"><StorePhone /></span>
+            </StorePhoneLink>
+            <StoreZaloLink  className="flex items-center gap-1 hover:text-primary-100">
               <MessageCircle className="w-4 h-4" />
               <span className="hidden sm:inline">Zalo Chat</span>
-            </a>
+            </StoreZaloLink>
           </div>
           <div>
-            <span>{t("topbar.hours")}</span>
+            <span><StoreText template={t.raw("topbar.hours") as string} /></span>
           </div>
         </div>
       </div>

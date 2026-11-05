@@ -76,6 +76,7 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "phone" TEXT,
     "password_hash" TEXT NOT NULL,
+    "password_changed_at" TIMESTAMP(3),
     "full_name" TEXT NOT NULL,
     "avatar" TEXT,
     "address" TEXT,
@@ -96,6 +97,7 @@ CREATE TABLE "staff" (
     "email" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
+    "password_changed_at" TIMESTAMP(3),
     "full_name" TEXT NOT NULL,
     "avatar" TEXT,
     "employee_code" TEXT NOT NULL,
@@ -373,6 +375,25 @@ CREATE INDEX "posts_author_id_idx" ON "posts"("author_id");
 -- CreateIndex
 CREATE INDEX "contact_messages_is_read_created_at_idx" ON "contact_messages"("is_read", "created_at");
 
+-- CreateTable
+CREATE TABLE "password_reset_tokens" (
+    "id" TEXT NOT NULL,
+    "token_hash" TEXT NOT NULL,
+    "account_type" TEXT NOT NULL,
+    "account_id" TEXT NOT NULL,
+    "expires_at" TIMESTAMP(3) NOT NULL,
+    "used_at" TIMESTAMP(3),
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "password_reset_tokens_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "password_reset_tokens_token_hash_key" ON "password_reset_tokens"("token_hash");
+
+-- CreateIndex
+CREATE INDEX "password_reset_tokens_account_type_account_id_idx" ON "password_reset_tokens"("account_type", "account_id");
+
 -- AddForeignKey
 ALTER TABLE "group_permissions" ADD CONSTRAINT "group_permissions_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -428,7 +449,6 @@ ALTER TABLE "posts" ADD CONSTRAINT "posts_author_id_fkey" FOREIGN KEY ("author_i
 -- ============================================================================
 -- DỮ LIỆU MẶC ĐỊNH (idempotent — chạy lại không tạo trùng)
 -- Mật khẩu băm bcrypt bằng pgcrypto ($2a$10$…) — tương thích bcrypt của backend.
--- ĐỔI MẬT KHẨU admin@petshop.vn NGAY khi đưa lên production.
 -- ============================================================================
 
 -- Nhóm -----------------------------------------------------------------------
@@ -471,29 +491,9 @@ INSERT INTO stores (id, name, slug, address, phone, email, zalo_link, latitude, 
    '0971616634', 'info@petshop.vn', 'https://zalo.me/0971616634', 21.0050, 105.8250, CURRENT_TIMESTAMP)
 ON CONFLICT (slug) DO NOTHING;
 
--- Tài khoản mặc định ---------------------------------------------------------
--- Super Admin (không đổi nhóm / khóa / xóa được)
-INSERT INTO staff (id, store_id, group_id, email, phone, password_hash, full_name, employee_code, position,
-                   specialties, is_super_admin, hire_date, updated_at)
-SELECT gen_random_uuid()::text, s.id, g.id, 'admin@petshop.vn', '0900000001', crypt('admin123', gen_salt('bf', 10)),
-       'Super Admin', 'ADMIN001', 'ADMIN', ARRAY['management'], true, DATE '2024-01-01', CURRENT_TIMESTAMP
-FROM stores s, groups g WHERE s.slug = 'cua-hang-chinh' AND g.key = 'admin'
-ON CONFLICT (email) DO NOTHING;
-
--- Nhân viên mẫu (nhóm Monitor)
-INSERT INTO staff (id, store_id, group_id, email, phone, password_hash, full_name, employee_code, position,
-                   specialties, hire_date, updated_at)
-SELECT gen_random_uuid()::text, s.id, g.id, 'monitor@petshop.vn', '0900000002', crypt('monitor123', gen_salt('bf', 10)),
-       'Nhân viên Lễ tân', 'MON001', 'RECEPTIONIST', ARRAY['booking'], DATE '2024-06-01', CURRENT_TIMESTAMP
-FROM stores s, groups g WHERE s.slug = 'cua-hang-chinh' AND g.key = 'monitor'
-ON CONFLICT (email) DO NOTHING;
-
--- Khách hàng mẫu (nhóm Customer)
-INSERT INTO users (id, group_id, email, phone, password_hash, full_name, updated_at)
-SELECT gen_random_uuid()::text, g.id, 'khach@petshop.vn', '0912345678', crypt('khach123', gen_salt('bf', 10)),
-       'Nguyễn Văn A', CURRENT_TIMESTAMP
-FROM groups g WHERE g.key = 'customer'
-ON CONFLICT (email) DO NOTHING;
+-- Tài khoản mặc định (admin / monitor / guest) KHÔNG nằm trong file này:
+-- backend tự tạo khi khởi động từ ADMIN_PASSWORD / MONITOR_PASSWORD / GUEST_PASSWORD trong .env
+-- (xem backend/src/bootstrap/default-accounts.ts).
 
 -- Danh mục & dịch vụ -----------------------------------------------------------
 INSERT INTO service_categories (id, name, slug, description, icon, display_order, updated_at) VALUES
@@ -537,14 +537,13 @@ ON CONFLICT (service_id, size) DO NOTHING;
 
 -- Bài viết mẫu -----------------------------------------------------------------
 INSERT INTO posts (id, slug, title, excerpt, content, author_id, author_name, is_published, published_at, updated_at)
-SELECT gen_random_uuid()::text, v.slug, v.title, v.excerpt, v.content, st.id, st.full_name, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+SELECT gen_random_uuid()::text, v.slug, v.title, v.excerpt, v.content, NULL, v.author_name, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
 FROM (VALUES
-  ('admin@petshop.vn', '5-meo-giu-long-cho-luon-muot-ma', '5 mẹo giữ lông chó luôn mượt mà',
+  ('Super Admin', '5-meo-giu-long-cho-luon-muot-ma', '5 mẹo giữ lông chó luôn mượt mà',
    'Chải lông đúng cách, chọn sữa tắm phù hợp và chế độ ăn là chìa khóa.',
    E'Chải lông mỗi ngày giúp loại bỏ lông rụng và phân bổ dầu tự nhiên.\n\nChọn sữa tắm theo loại da, tắm 2-4 tuần một lần, và bổ sung omega-3 trong khẩu phần ăn.'),
-  ('monitor@petshop.vn', 'khi-nao-nen-dua-meo-di-spa', 'Khi nào nên đưa mèo đi spa?',
+  ('Nhân viên Lễ tân', 'khi-nao-nen-dua-meo-di-spa', 'Khi nào nên đưa mèo đi spa?',
    'Không phải bé mèo nào cũng cần tắm thường xuyên — vậy khi nào là phù hợp?',
    'Mèo tự liếm lông nên ít khi cần tắm. Hãy đưa bé đi spa khi lông bết dính, có mùi, hoặc bác sĩ khuyên dùng dầu gội dược liệu.')
-) AS v(email, slug, title, excerpt, content)
-JOIN staff st ON st.email = v.email
+) AS v(author_name, slug, title, excerpt, content)
 ON CONFLICT (slug) DO NOTHING;

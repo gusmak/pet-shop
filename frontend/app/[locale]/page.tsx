@@ -16,8 +16,9 @@ import {
   HeartHandshake,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import GoogleMap from "@/components/GoogleMap";
 import Testimonials from "@/components/Testimonials";
+import CategoryFromPrice from "@/components/CategoryFromPrice";
+import { StoreMap, StorePhone, StorePhoneLink, StoreText, StoreZaloLink } from "@/components/StoreContact";
 
 type Item = { title: string; description: string };
 type ServiceItem = { title: string; description: string; price: string };
@@ -28,9 +29,9 @@ type Stat = { value: string; label: string };
 const delay = (i: number) => ({ "--i": i } as React.CSSProperties);
 
 const SERVICE_META = [
-  { icon: Bath, emoji: "🛁", tint: "from-sky-100 to-primary-100" },
-  { icon: Scissors, emoji: "✂️", tint: "from-primary-100 to-accent-100" },
-  { icon: Heart, emoji: "🩺", tint: "from-rose-100 to-primary-100" },
+  { icon: Bath, emoji: "🛁", tint: "from-sky-100 to-primary-100", category: "spa-tam" },
+  { icon: Scissors, emoji: "✂️", tint: "from-primary-100 to-accent-100", category: "cat-tia-grooming" },
+  { icon: Heart, emoji: "🩺", tint: "from-rose-100 to-primary-100", category: "cham-soc-dac-biet" },
 ];
 
 const STEP_META = [
@@ -109,19 +110,19 @@ export default async function Home({
                   {t("hero.bookNow")}
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
-                <a
-                  href="tel:0971616634"
+                <StorePhoneLink
+                  
                   className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary-600 bg-white px-8 py-4 font-semibold text-primary-700 transition-colors hover:bg-primary-50"
                 >
                   <PhoneCall className="h-5 w-5" />
-                  0971 616 634
-                </a>
+                  <StorePhone />
+                </StorePhoneLink>
               </div>
 
               <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-primary-100 pt-8">
                 {stats.map((s) => (
                   <div key={s.label}>
-                    <dt className="text-2xl font-extrabold text-gray-900 font-heading">{s.value}</dt>
+                    <dt className="text-2xl font-extrabold text-gray-900 font-heading"><StoreText template={s.value} /></dt>
                     <dd className="text-sm text-gray-500">{s.label}</dd>
                   </div>
                 ))}
@@ -149,7 +150,7 @@ export default async function Home({
 
               <div className="absolute -right-2 sm:-right-6 top-10 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-xl ring-1 ring-black/5 animate-float" style={{ animationDelay: "-3s" }}>
                 <Bath className="h-5 w-5 text-primary-600" />
-                <span className="text-sm font-semibold text-gray-800">{t("hero.floatingPrice")}</span>
+                <span className="text-sm font-semibold text-gray-800"><StoreText template={t.raw("hero.floatingPrice") as string} /></span>
               </div>
             </div>
           </div>
@@ -166,7 +167,7 @@ export default async function Home({
               </span>
               <div>
                 <div className="text-sm text-gray-500">{item.label}</div>
-                <div className="font-semibold text-gray-900">{item.value}</div>
+                <div className="font-semibold text-gray-900"><StoreText template={item.value} /></div>
               </div>
             </div>
           ))}
@@ -203,7 +204,7 @@ export default async function Home({
                   <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-5">
                     <span className="text-xl font-extrabold text-primary-600">
                       <span className="mr-1 text-sm font-medium text-gray-500">{t("services.from")}</span>
-                      {s.price}
+                      <CategoryFromPrice category={s.category} demoText={s.price} />
                     </span>
                     <Link href="/services" className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 hover:text-primary-700">
                       {t("services.viewDetails")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -270,7 +271,7 @@ export default async function Home({
                   <f.icon className="h-7 w-7" />
                 </span>
                 <h3 className="mt-5 text-lg font-bold text-gray-900">{f.title}</h3>
-                <p className="mt-2 text-gray-600 leading-relaxed">{f.description}</p>
+                <p className="mt-2 text-gray-600 leading-relaxed"><StoreText template={f.description} /></p>
               </div>
             ))}
           </div>
@@ -295,15 +296,13 @@ export default async function Home({
             >
               {t("cta.bookOnline")} <ArrowRight className="h-5 w-5" />
             </Link>
-            <a
-              href="https://zalo.me/0971616634"
-              target="_blank"
-              rel="noopener noreferrer"
+            <StoreZaloLink
+              
               className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg ring-2 ring-white/30 transition-all hover:-translate-y-0.5 hover:bg-blue-700"
             >
               <MessageCircle className="h-5 w-5" />
               {t("cta.chatZalo")}
-            </a>
+            </StoreZaloLink>
           </div>
         </div>
       </section>
@@ -316,7 +315,7 @@ export default async function Home({
             <h2 className="mt-3 text-balance text-3xl lg:text-5xl font-extrabold text-gray-900">{t("map.title")}</h2>
           </div>
           <div className="reveal overflow-hidden rounded-3xl shadow-xl ring-1 ring-black/5">
-            <GoogleMap latitude={21.005} longitude={105.825} address="7 Chùa Bộc, Đống Đa, Hà Nội" height="460px" />
+            <StoreMap height="460px" />
           </div>
         </div>
       </section>

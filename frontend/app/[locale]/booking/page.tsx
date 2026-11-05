@@ -7,6 +7,7 @@ import { Calendar, User, PawPrint, Scissors, Bath, Heart, CheckCircle, Check, ty
 import { DEMO_MODE, addDemoBooking } from "@/lib/demo";
 import { useAuth } from "@/lib/useAuth";
 import { api } from "@/lib/api";
+import { buildTimeSlots } from "@/lib/slots";
 
 interface BookingResponse {
   bookingNumber: string;
@@ -48,26 +49,15 @@ interface ApiService {
   variants: { size: string; price: number }[];
 }
 
-// Khung giờ hẹn sinh từ giờ mở/đóng cửa; bỏ mốc 12:00 (nghỉ trưa 12:00–13:00).
 const DEFAULT_OPEN_TIME = "08:00";
 const DEFAULT_CLOSE_TIME = "20:00";
-const LUNCH_BREAK_HOUR = 12;
-
-function buildTimeSlots(openTime: string, closeTime: string): string[] {
-  const hourOf = (t: string) => Number(t.slice(0, 2));
-  const slots: string[] = [];
-  for (let h = hourOf(openTime); h < hourOf(closeTime); h++) {
-    if (h === LUNCH_BREAK_HOUR) continue;
-    slots.push(`${String(h).padStart(2, "0")}:00`);
-  }
-  return slots;
-}
 
 export default function BookingPage() {
   const locale = useLocale();
   const t = useTranslations("bookingPage");
   const cat = useTranslations("catalog");
   const time = useTranslations("common.time");
+  const common = useTranslations("common");
 
   const buildFallback = (): Svc[] =>
     FALLBACK_META.map((m) => ({ ...m, name: cat(`services.${m.slug}.name`) }));
@@ -85,7 +75,8 @@ export default function BookingPage() {
   });
 
   const { user } = useAuth();
-  const [services, setServices] = useState<Svc[]>(buildFallback());
+  const [services, setServices] = useState<Svc[]>(DEMO_MODE ? buildFallback() : []);
+  const [catalogState, setCatalogState] = useState<"loading" | "ok" | "error">(DEMO_MODE ? "ok" : "loading");
   const [selected, setSelected] = useState<string[]>([]);
 
   // Chọn sẵn dịch vụ khi vào từ /services hoặc /pricing (?service=<slug>).
@@ -96,13 +87,31 @@ export default function BookingPage() {
     return () => clearTimeout(id);
   }, []);
 
+  // Khách đã đăng nhập: điền sẵn họ tên / SĐT / email từ tài khoản (chỉ điền ô còn trống).
+  useEffect(() => {
+    if (DEMO_MODE || user?.role !== "customer") return;
+    const id = setTimeout(
+      () =>
+        setFormData((f) => ({
+          ...f,
+          fullName: f.fullName || user.name,
+          phone: f.phone || user.phone || "",
+          email: f.email || user.email,
+        })),
+      0,
+    );
+    return () => clearTimeout(id);
+  }, [user]);
+
   // Chạy thật: lấy dịch vụ + giá từ database.
   useEffect(() => {
     if (DEMO_MODE) return;
     let cancelled = false;
     (async () => {
       const res = await api.get<ApiService[]>("/api/services");
-      if (cancelled || !res.data?.length) return;
+      if (cancelled) return;
+      setCatalogState(res.data?.length ? "ok" : "error");
+      if (!res.data?.length) return;
       setServices(
         res.data.map((s) => ({
           slug: s.slug,
@@ -366,6 +375,9 @@ export default function BookingPage() {
               <span className="font-medium text-gray-700">{sizeLabels[formData.petSize]}</span>.
             </p>
             <div className="grid md:grid-cols-2 gap-4">
+              {catalogState !== "ok" && (
+                <p className="col-span-full py-12 text-center text-gray-500">{catalogState === "loading" ? common("dataLoading") : common("dataError")}</p>
+              )}
               {services.map((service) => {
                 const Icon = CATEGORY_ICONS[service.category] ?? Scissors;
                 const checked = selected.includes(service.slug);

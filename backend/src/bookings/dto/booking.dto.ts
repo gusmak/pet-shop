@@ -67,6 +67,15 @@ export class CreateBookingDto {
   notes?: string;
 }
 
+// Đặt lại một lịch cũ: giữ nguyên dịch vụ/thú cưng/liên hệ, chỉ chọn ngày giờ mới.
+export class RebookDto {
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'date phải có dạng YYYY-MM-DD' })
+  date: string;
+
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/, { message: 'time phải có dạng HH:mm' })
+  time: string;
+}
+
 export class LookupBookingDto {
   @IsString()
   number: string;

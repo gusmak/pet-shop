@@ -78,6 +78,7 @@ export const ADMIN_NAV: NavItem[] = [
   { href: '/admin/posts', icon: '📝', label: 'Bài viết', permission: 'posts.write' },
   { href: '/admin/services', icon: '💼', label: 'Dịch vụ', permission: 'services.manage' },
   { href: '/admin/users', icon: '👥', label: 'Khách hàng', permission: 'customers.view' },
+  { href: '/admin/contact', icon: '✉️', label: 'Liên hệ', permission: 'customers.view' },
   { href: '/admin/staff', icon: '👨‍💼', label: 'Nhân viên', permission: 'staff.manage' },
   { href: '/admin/groups', icon: '🛡️', label: 'Nhóm & phân quyền', permission: 'groups.manage' },
   { href: '/admin/settings', icon: '⚙️', label: 'Hệ thống', permission: 'settings.manage' },

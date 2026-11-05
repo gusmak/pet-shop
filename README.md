@@ -98,8 +98,10 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/petshop?schema=pet-s
 PORT=8000
 FRONTEND_URL=http://localhost:3002
 JWT_SECRET=<ngẫu nhiên>
-SUPER_ADMIN_PASSWORD=          # chỉ dùng khi npm run seed
-SEED_DEMO_ACCOUNTS=true
+SMTP_HOST=                     # gửi email quên mật khẩu (xem .env.example)
+ADMIN_PASSWORD=                # admin@petshop.vn — tự tạo lúc khởi động, không ghi đè
+MONITOR_PASSWORD=              # monitor@petshop.vn (để trống = không tạo)
+GUEST_PASSWORD=                # guest@petshop.vn (để trống = không tạo)
 ```
 
 ## API Endpoints
@@ -110,6 +112,8 @@ Quyền (🔐) kiểm tra tại backend ở mỗi request (`@Auth(...)`), không
 |--------|----------|-------|-------|
 | POST | `/api/auth/login` | công khai | Đăng nhập (staff: email; khách: email/SĐT) |
 | POST | `/api/auth/register` | công khai | Đăng ký → nhóm Customer |
+| POST | `/api/auth/forgot-password` | công khai | Gửi email chứa link đặt lại mật khẩu (luôn trả cùng kết quả, 60s/lần/tài khoản) |
+| POST | `/api/auth/reset-password` | công khai | Đặt mật khẩu mới bằng token trong link (1 giờ, dùng một lần) |
 | GET | `/api/auth/me` | 🔐 đăng nhập | Hồ sơ + nhóm + quyền |
 | POST | `/api/auth/change-password` | 🔐 đăng nhập | Đổi mật khẩu |
 | GET | `/api/services`, `/:slug`, `/categories`, `/category/:slug` | công khai | Dịch vụ đang hoạt động (kèm giá theo size) |
@@ -125,6 +129,7 @@ Quyền (🔐) kiểm tra tại backend ở mỗi request (`@Auth(...)`), không
 | GET | `/api/admin/bookings` | 🔐 `bookings.view` | Danh sách lịch (lọc, phân trang) |
 | PATCH | `/api/admin/bookings/:id/status` | 🔐 `bookings.manage` | Xác nhận / hoàn thành / hủy |
 | GET | `/api/admin/customers` | 🔐 `customers.view` | Danh sách khách |
+| POST/PATCH | `/api/admin/customers[/:id]` | 🔐 `groups.manage` | Tạo khách / sửa / khóa / đặt lại mật khẩu |
 | GET/POST/PATCH/DELETE | `/api/admin/staff[/:id]` | 🔐 `staff.manage` | Quản lý nhân viên |
 | GET | `/api/admin/groups` | 🔐 `groups.manage` | Nhóm + quyền |
 | PUT | `/api/admin/groups/:key/permissions` | 🔐 `groups.manage` | Gán quyền cho nhóm |
@@ -147,11 +152,18 @@ Mô hình **User → Nhóm → Quyền**. Trang đăng nhập chung `/login`; qu
 
 | Nhóm | Dành cho | Tài khoản demo |
 |------|----------|----------------|
-| **Admin** | Quản trị viên — toàn quyền (khóa, không chỉnh được) | `admin@petshop.vn` / `admin123` |
-| **Monitor** | Staff — vào admin, xem lịch, viết bài | `monitor@petshop.vn` / `monitor123` |
-| **Customer** | Khách hàng — xem tài khoản & lịch sử đặt | `khach@petshop.vn` / `khach123` |
+| **Admin** | Quản trị viên — toàn quyền (khóa, không chỉnh được) | `admin@petshop.vn` / `ADMIN_PASSWORD` |
+| **Monitor** | Staff — vào admin, xem lịch, viết bài | `monitor@petshop.vn` / `MONITOR_PASSWORD` |
+| **Customer** | Khách hàng — xem tài khoản & lịch sử đặt | `guest@petshop.vn` / `GUEST_PASSWORD` |
 
-> ⚠️ Đổi mật khẩu `admin` khi đưa lên production.
+> Mật khẩu 3 tài khoản này do bạn đặt trong `.env` (`ADMIN_PASSWORD`, `MONITOR_PASSWORD`, `GUEST_PASSWORD`). Backend tự tạo tài khoản còn thiếu mỗi lần khởi động và **không ghi đè** tài khoản đã tồn tại — muốn đổi mật khẩu sau đó dùng `/api/auth/change-password`. Để trống `MONITOR_PASSWORD`/`GUEST_PASSWORD` nếu không cần tài khoản mẫu.
+
+## Rate-limit & phiên đăng nhập
+
+- Giới hạn theo IP: chung 120 req/phút; đăng nhập 10/phút; đăng ký 5/phút; quên mật khẩu 5/15 phút; đặt lại/đổi mật khẩu 10/15 phút; liên hệ 5/phút; đặt lịch 10/phút. Vượt giới hạn trả `429`.
+- Sau reverse proxy phải đặt `TRUST_PROXY=1`, nếu không mọi khách bị tính chung một IP (IP của proxy).
+- Đổi / đặt lại mật khẩu (kể cả admin reset) **vô hiệu mọi token cũ** của tài khoản đó — phải đăng nhập lại.
+- DB tạo trước khi có tính năng này: chạy `backend/prisma/upgrades/2026-11-auth.sql` (xem hướng dẫn trong file).
 
 ## Database
 

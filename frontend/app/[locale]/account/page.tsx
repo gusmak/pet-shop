@@ -5,6 +5,7 @@ import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth, type AuthUser } from "@/lib/useAuth";
+import BookingHistory from "@/components/account/BookingHistory";
 import { usePersistedState } from "@/lib/usePersistedState";
 import { ROLE_LABELS } from "@/lib/permissions";
 import {
@@ -12,10 +13,11 @@ import {
   BOOKING_STATUS_COLORS,
   BOOKING_STATUS_LABELS,
   formatVnd,
+  DEMO_MODE,
   type DemoBooking,
 } from "@/lib/demo";
 
-function BookingHistory({ user }: { user: AuthUser }) {
+function DemoBookingHistory({ user }: { user: AuthUser }) {
   const t = useTranslations("accountPage");
   const [bookings] = usePersistedState<DemoBooking[]>("demo.bookings", INITIAL_BOOKINGS);
   const mine = bookings.filter((b) => b.userId === user.id);
@@ -69,25 +71,39 @@ export default function AccountPage() {
     return <div className="py-32 text-center text-gray-500">{t("loading")}</div>;
   }
 
+  const isCustomer = user.role === "customer";
+  const initial = user.name.trim().charAt(0).toUpperCase();
+
   return (
     <div className="py-12 bg-gradient-to-br from-primary-50 via-white to-primary-50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
         <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
-            <p className="text-gray-600 text-sm">
-              {user.email}
-              {user.phone ? ` · ${user.phone}` : ""}
-            </p>
-            <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-700">
-              {t("group")} {ROLE_LABELS[user.role]}
-            </span>
+          <div className="flex items-center gap-4 min-w-0">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary-600 text-2xl font-bold text-white">{initial}</div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold text-gray-900 truncate">{user.name}</h1>
+              <p className="text-gray-600 text-sm break-all">
+                {user.email}
+                {user.phone ? ` · ${user.phone}` : ""}
+              </p>
+              {/* Nhãn nhóm chỉ hiện với nhân viên; khách hàng không cần thấy */}
+              {!isCustomer && (
+                <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-700">
+                  {t("group")} {ROLE_LABELS[user.role]}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             {can("admin.access") && (
               <NextLink href="/admin" className="px-5 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-semibold">
                 {t("adminPanel")}
               </NextLink>
+            )}
+            {!DEMO_MODE && (
+              <Link href="/account/password" className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                {t("changePasswordLink")}
+              </Link>
             )}
             <button
               onClick={() => {
@@ -101,16 +117,15 @@ export default function AccountPage() {
           </div>
         </div>
 
-        <BookingHistory user={user} />
+        {isCustomer && (DEMO_MODE ? <DemoBookingHistory user={user} /> : <BookingHistory />)}
 
         <div className="grid sm:grid-cols-2 gap-4">
+          <Link href="/booking" className="bg-primary-600 text-white rounded-2xl shadow p-5 hover:bg-primary-700 transition-colors">
+            <div className="font-bold">{t("bookNow")}</div>
+          </Link>
           <Link href="/services" className="bg-white rounded-2xl shadow p-5 hover:shadow-lg transition-shadow">
             <div className="font-bold text-gray-900">{t("viewServices")}</div>
             <div className="text-sm text-gray-600">{t("viewServicesDesc")}</div>
-          </Link>
-          <Link href="/pricing" className="bg-white rounded-2xl shadow p-5 hover:shadow-lg transition-shadow">
-            <div className="font-bold text-gray-900">{t("pricing")}</div>
-            <div className="text-sm text-gray-600">{t("pricingDesc")}</div>
           </Link>
         </div>
       </div>

@@ -1,12 +1,10 @@
 import { PrismaClient, PetSize } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+import { ensureDefaultAccounts } from '../src/bootstrap/default-accounts';
 import { DEFAULT_GROUP_PERMISSIONS, GROUP_DEFS, PERMISSIONS } from '../src/auth/permissions';
 
 // Idempotent: chạy lại không tạo trùng, và KHÔNG ghi đè mật khẩu/nhóm của tài khoản đã tồn tại.
 // Dữ liệu tương đương phần "DỮ LIỆU MẶC ĐỊNH" trong ../../schema.sql.
 const prisma = new PrismaClient();
-
-const hash = (pw: string) => bcrypt.hash(pw, 10);
 
 async function main() {
   console.log('🌱 Seeding database...');
@@ -47,62 +45,8 @@ async function main() {
     },
   });
 
-  const [adminGroup, monitorGroup, customerGroup] = await Promise.all(
-    ['admin', 'monitor', 'customer'].map((key) => prisma.group.findUniqueOrThrow({ where: { key } })),
-  );
-
-  // Super Admin mặc định. Đặt SUPER_ADMIN_PASSWORD khi seed production; mặc định chỉ dành cho dev.
-  const adminPassword = process.env.SUPER_ADMIN_PASSWORD || 'admin123';
-  await prisma.staff.upsert({
-    where: { email: 'admin@petshop.vn' },
-    update: { isSuperAdmin: true, groupId: adminGroup.id },
-    create: {
-      email: 'admin@petshop.vn',
-      phone: '0900000001',
-      passwordHash: await hash(adminPassword),
-      fullName: 'Super Admin',
-      employeeCode: 'ADMIN001',
-      position: 'ADMIN',
-      specialties: ['management'],
-      isSuperAdmin: true,
-      hireDate: new Date('2024-01-01'),
-      storeId: store.id,
-      groupId: adminGroup.id,
-    },
-  });
-  console.log(`  ✅ Super admin: admin@petshop.vn${process.env.SUPER_ADMIN_PASSWORD ? '' : ' / admin123  (ĐỔI MẬT KHẨU khi lên production)'}`);
-
-  // Tài khoản mẫu cho dev/demo — bỏ qua khi SEED_DEMO_ACCOUNTS=false
-  if (process.env.SEED_DEMO_ACCOUNTS !== 'false') {
-    await prisma.staff.upsert({
-      where: { email: 'monitor@petshop.vn' },
-      update: {},
-      create: {
-        email: 'monitor@petshop.vn',
-        phone: '0900000002',
-        passwordHash: await hash('monitor123'),
-        fullName: 'Nhân viên Lễ tân',
-        employeeCode: 'MON001',
-        position: 'RECEPTIONIST',
-        specialties: ['booking'],
-        hireDate: new Date('2024-06-01'),
-        storeId: store.id,
-        groupId: monitorGroup.id,
-      },
-    });
-    await prisma.user.upsert({
-      where: { email: 'khach@petshop.vn' },
-      update: {},
-      create: {
-        email: 'khach@petshop.vn',
-        phone: '0912345678',
-        passwordHash: await hash('khach123'),
-        fullName: 'Nguyễn Văn A',
-        groupId: customerGroup.id,
-      },
-    });
-    console.log('  ✅ Demo: monitor@petshop.vn / monitor123, khach@petshop.vn / khach123');
-  }
+  // Tài khoản mặc định (admin / monitor / guest): mật khẩu lấy từ .env — xem src/bootstrap/default-accounts.ts
+  await ensureDefaultAccounts(prisma);
 
   // Danh mục & dịch vụ
   const categories = [
@@ -142,18 +86,18 @@ async function main() {
 
   // Bài viết mẫu
   const posts = [
-    { email: 'admin@petshop.vn', slug: '5-meo-giu-long-cho-luon-muot-ma', title: '5 mẹo giữ lông chó luôn mượt mà', excerpt: 'Chải lông đúng cách, chọn sữa tắm phù hợp và chế độ ăn là chìa khóa.', content: 'Chải lông mỗi ngày giúp loại bỏ lông rụng và phân bổ dầu tự nhiên.\n\nChọn sữa tắm theo loại da, tắm 2-4 tuần một lần, và bổ sung omega-3 trong khẩu phần ăn.' },
-    { email: 'monitor@petshop.vn', slug: 'khi-nao-nen-dua-meo-di-spa', title: 'Khi nào nên đưa mèo đi spa?', excerpt: 'Không phải bé mèo nào cũng cần tắm thường xuyên — vậy khi nào là phù hợp?', content: 'Mèo tự liếm lông nên ít khi cần tắm. Hãy đưa bé đi spa khi lông bết dính, có mùi, hoặc bác sĩ khuyên dùng dầu gội dược liệu.' },
+    { email: 'admin@petshop.vn', authorName: 'Super Admin', slug: '5-meo-giu-long-cho-luon-muot-ma', title: '5 mẹo giữ lông chó luôn mượt mà', excerpt: 'Chải lông đúng cách, chọn sữa tắm phù hợp và chế độ ăn là chìa khóa.', content: 'Chải lông mỗi ngày giúp loại bỏ lông rụng và phân bổ dầu tự nhiên.\n\nChọn sữa tắm theo loại da, tắm 2-4 tuần một lần, và bổ sung omega-3 trong khẩu phần ăn.' },
+    { email: 'monitor@petshop.vn', authorName: 'Nhân viên Lễ tân', slug: 'khi-nao-nen-dua-meo-di-spa', title: 'Khi nào nên đưa mèo đi spa?', excerpt: 'Không phải bé mèo nào cũng cần tắm thường xuyên — vậy khi nào là phù hợp?', content: 'Mèo tự liếm lông nên ít khi cần tắm. Hãy đưa bé đi spa khi lông bết dính, có mùi, hoặc bác sĩ khuyên dùng dầu gội dược liệu.' },
   ];
   for (const p of posts) {
     const author = await prisma.staff.findUnique({ where: { email: p.email } });
-    if (!author) continue; // tài khoản mẫu bị tắt
-    const { email, ...data } = p;
+    const { email, authorName, ...data } = p;
     void email;
+    void authorName;
     await prisma.post.upsert({
       where: { slug: p.slug },
       update: {},
-      create: { ...data, authorId: author.id, authorName: author.fullName, isPublished: true, publishedAt: new Date() },
+      create: { ...data, authorId: author?.id ?? null, authorName: author?.fullName ?? authorName, isPublished: true, publishedAt: new Date() },
     });
   }
 

@@ -3,16 +3,16 @@
 import { useLocale, useTranslations } from "next-intl";
 
 interface GoogleMapProps {
-  latitude?: number;
-  longitude?: number;
-  address?: string;
+  latitude: number;
+  longitude: number;
+  address: string;
   height?: string;
 }
 
 export default function GoogleMap({
-  latitude = 21.005,
-  longitude = 105.825,
-  address = "7 Chùa Bộc, Đống Đa, Hà Nội",
+  latitude,
+  longitude,
+  address,
   height = "400px",
 }: GoogleMapProps) {
   const locale = useLocale();

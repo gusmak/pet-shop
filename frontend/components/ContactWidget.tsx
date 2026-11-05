@@ -2,13 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { Phone, MessageCircle } from "lucide-react";
-
-const HOTLINE = "0971616634";
-const ZALO_LINK = "https://zalo.me/0971616634";
+import { useStore, formatPhone, telHref, zaloHref } from "@/lib/store";
 
 // Lớp sóng nằm SAU nút (-z-10) và nút có nền đặc, để icon luôn rõ nét.
 export default function ContactWidget() {
   const t = useTranslations("common");
+  const store = useStore();
+  if (!store) return null; // chưa tải thông tin cửa hàng
+  const ZALO_LINK = zaloHref(store);
+  const TEL = telHref(store.phone);
 
   return (
     <>
@@ -29,14 +31,14 @@ export default function ContactWidget() {
         </a>
 
         <a
-          href={`tel:${HOTLINE}`}
+          href={TEL}
           aria-label={t("widget.hotline")}
           className="group relative isolate flex items-center justify-center w-14 h-14 rounded-full bg-primary-600 text-white shadow-xl shadow-primary-600/30 ring-4 ring-white transition-transform hover:scale-110 hover:bg-primary-700"
         >
           <span className="absolute inset-0 -z-10 rounded-full bg-primary-500 animate-ring-out" style={{ animationDelay: "0.6s" }} aria-hidden />
           <Phone className="w-6 h-6" strokeWidth={2.25} />
           <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-            0971 616 634
+            {formatPhone(store.phone)}
           </span>
         </a>
       </div>
@@ -45,7 +47,7 @@ export default function ContactWidget() {
       <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
         <div className="grid grid-cols-2 gap-3 p-2.5">
           <a
-            href={`tel:${HOTLINE}`}
+            href={TEL}
             className="flex items-center justify-center gap-2 h-12 rounded-xl bg-primary-600 text-white font-semibold active:bg-primary-700"
           >
             <Phone className="w-5 h-5" strokeWidth={2.25} />

@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { Lowercase, NormalizePhone, Trim } from '../../common/normalize';
 
 // Đăng nhập chung cho nhân viên (email) và khách (email hoặc SĐT).
@@ -39,6 +39,29 @@ export class RegisterDto {
 export class ChangePasswordDto {
   @IsString()
   currentPassword: string;
+
+  @IsString()
+  @MinLength(6)
+  @MaxLength(100)
+  newPassword: string;
+}
+
+export class ForgotPasswordDto {
+  @Lowercase()
+  @IsEmail()
+  email: string;
+
+  // Ngôn ngữ của email + liên kết (theo trang người dùng đang xem).
+  @IsOptional()
+  @IsIn(['vi', 'en'])
+  locale?: 'vi' | 'en';
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  @MinLength(20)
+  @MaxLength(200)
+  token: string;
 
   @IsString()
   @MinLength(6)
